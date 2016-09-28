@@ -12,13 +12,13 @@ import org.frice.game.obj.button.SimpleText
 import org.frice.game.obj.sub.ImageObject
 import org.frice.game.resource.graphics.ColorResource
 import org.frice.game.resource.image.ImageResource
-import org.frice.game.utils.data.FileUtils
 import org.frice.game.utils.graphics.shape.FOval
 import org.frice.game.utils.graphics.shape.FRectangle
 import org.frice.game.utils.message.FDialog
 import org.frice.game.utils.time.FTimeListener
 import java.awt.Dimension
 import java.awt.Rectangle
+import java.io.File
 import java.util.*
 
 /**
@@ -75,7 +75,11 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		bounds = Rectangle(x, y, width, height)
 	}
 
-	fun log(s: String) = FileUtils.string2File(s, logFile)
+	fun log(s: String) {
+		val f = File(logFile)
+		if (!f.exists()) f.createNewFile()
+		f.appendText(s)
+	}
 
 	fun rectangle(block: DSLShapeObject.() -> Unit) {
 		val so = DSLShapeObject(ColorResource.西木野真姬, FRectangle(50, 50))
