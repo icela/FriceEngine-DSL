@@ -12,9 +12,11 @@ import org.frice.game.obj.sub.ImageObject
 import org.frice.game.obj.sub.ShapeObject
 import org.frice.game.resource.graphics.ColorResource
 import org.frice.game.resource.image.ImageResource
+import org.frice.game.utils.data.FileUtils
 import org.frice.game.utils.graphics.shape.FOval
 import org.frice.game.utils.graphics.shape.FRectangle
 import org.frice.game.utils.message.FDialog
+import org.frice.game.utils.time.FTimeListener
 import java.awt.Dimension
 import java.awt.Rectangle
 import java.util.*
@@ -37,11 +39,15 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	var onUpdate: (() -> Unit)? = null
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
 
+	val timer = FriceGameTimer()
+
+	val logFile = "frice.log"
+
 	/**
 	 * cannot be in 'onInit'
 	 */
 	override fun onLastInit() {
-		super.onInit()
+		super.onLastInit()
 		block.invoke(this)
 	}
 
@@ -52,6 +58,8 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	fun bounds(x: Int, y: Int, width: Int, height: Int) {
 		bounds = Rectangle(x, y, width, height)
 	}
+
+	fun log(s: String) = FileUtils.string2File(s, logFile)
 
 	fun rectangle(block: ShapeObject.() -> Unit) {
 		val so = ShapeObject(ColorResource.西木野真姬, FRectangle(50, 50))
@@ -84,6 +92,17 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	fun whenUpdate(block: () -> Unit) {
 		onUpdate = block
 	}
+
+	fun every(millisSeconds: Int, block: FriceGameTimer.() -> Unit) {
+		addTimeListener(FTimeListener(millisSeconds, {
+			block(timer)
+		}))
+	}
+
+	fun Long.elapsed() = timer.stopWatch(this)
+	fun Int.elapsed() = timer.stopWatch(this.toLong())
+	infix fun Long.from(begin: Long) = this - begin
+	infix fun Int.from(begin: Int) = this - begin
 
 	fun AbstractObject.name(s: String) = namedObjects.put(s, this)
 

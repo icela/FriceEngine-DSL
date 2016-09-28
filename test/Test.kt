@@ -1,4 +1,3 @@
-
 import org.frice.dsl.game
 
 /**
@@ -17,6 +16,13 @@ fun main(args: Array<String>) {
 
 		whenUpdate {
 
+		}
+
+		every(1000) {
+			oval {
+				x = elapsed / 10.0
+				y = elapsed / 10.0
+			}
 		}
 
 		rectangle {
