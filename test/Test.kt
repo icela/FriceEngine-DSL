@@ -1,4 +1,6 @@
+
 import org.frice.dsl.game
+import org.frice.game.anim.move.AccelerateMove
 
 /**
  * Created by ice1000 on 2016/9/28.
@@ -12,6 +14,7 @@ fun main(args: Array<String>) {
 		rectangle {
 			x = 100.0
 			y = 100.0
+			width = 100.0
 		}
 		oval {
 			x = 30.0
@@ -21,6 +24,7 @@ fun main(args: Array<String>) {
 			file("C:/frice.png")
 			x = 200.0
 			y = 300.0
+			anims.add(AccelerateMove(-10.0, -10.0))
 		}
 	}
 }

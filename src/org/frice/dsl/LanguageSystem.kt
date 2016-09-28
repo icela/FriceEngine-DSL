@@ -1,6 +1,11 @@
 package org.frice.dsl
 
 import org.frice.game.Game
+import org.frice.game.anim.move.AccelerateMove
+import org.frice.game.anim.move.AccurateMove
+import org.frice.game.anim.move.DoublePair
+import org.frice.game.obj.FObject
+import org.frice.game.obj.button.SimpleText
 import org.frice.game.obj.sub.ImageObject
 import org.frice.game.obj.sub.ShapeObject
 import org.frice.game.resource.graphics.ColorResource
@@ -54,6 +59,12 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		addObject(io)
 	}
 
+	fun text(block: SimpleText.() -> Unit) {
+		val st = SimpleText("", 0.0, 0.0)
+		block(st)
+		addObject(st)
+	}
+
 	fun ImageObject.file(s: String) {
 		res = ImageResource.fromPath(s)
 	}
@@ -61,6 +72,19 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	fun ImageObject.url(s: String) {
 		res = ImageResource.fromWeb(s)
 	}
+
+	fun FObject.velocity(block: DoublePair.() -> Unit) {
+		val a = DoublePair(0.0, 0.0)
+		block.invoke(a)
+		anims.add(AccurateMove(a.x, a.y))
+	}
+
+	fun FObject.accelerate(block: DoublePair.() -> Unit) {
+		val a = DoublePair(0.0, 0.0)
+		block.invoke(a)
+		anims.add(AccelerateMove(a.x, a.y))
+	}
+
 }
 
 @JvmName("game")
