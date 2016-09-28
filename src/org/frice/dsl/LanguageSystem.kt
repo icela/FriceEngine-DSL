@@ -1,5 +1,6 @@
 package org.frice.dsl
 
+import org.frice.dsl.extension.DSLShapeObject
 import org.frice.game.Game
 import org.frice.game.anim.move.AccelerateMove
 import org.frice.game.anim.move.AccurateMove
@@ -9,7 +10,6 @@ import org.frice.game.obj.FObject
 import org.frice.game.obj.PhysicalObject
 import org.frice.game.obj.button.SimpleText
 import org.frice.game.obj.sub.ImageObject
-import org.frice.game.obj.sub.ShapeObject
 import org.frice.game.resource.graphics.ColorResource
 import org.frice.game.resource.image.ImageResource
 import org.frice.game.utils.data.FileUtils
@@ -33,20 +33,20 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		inline fun unless(condition: Boolean, block: () -> Unit) {
 			if (!condition) block()
 		}
-
-		val BLACK = ColorResource.BLACK
-		val BLUE = ColorResource.BLUE
-		val RED = ColorResource.RED
-		val PINK = ColorResource.PINK
-		val GREEN = ColorResource.GREEN
-		val GRAY = ColorResource.GRAY
-		val WHITE = ColorResource.WHITE
-		val YELLOW = ColorResource.YELLOW
-		val COLORLESS = ColorResource.COLORLESS
-		val CYAN = ColorResource.CYAN
-		val ORANGE = ColorResource.ORANGE
-		val MAGENTA = ColorResource.MAGENTA
 	}
+
+	val BLACK = ColorResource.BLACK
+	val BLUE = ColorResource.BLUE
+	val RED = ColorResource.RED
+	val PINK = ColorResource.PINK
+	val GREEN = ColorResource.GREEN
+	val GRAY = ColorResource.GRAY
+	val WHITE = ColorResource.WHITE
+	val YELLOW = ColorResource.YELLOW
+	val COLORLESS = ColorResource.COLORLESS
+	val CYAN = ColorResource.CYAN
+	val ORANGE = ColorResource.ORANGE
+	val MAGENTA = ColorResource.MAGENTA
 
 	var onExit: (() -> Unit)? = null
 	var onUpdate: (() -> Unit)? = null
@@ -77,14 +77,14 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 
 	fun log(s: String) = FileUtils.string2File(s, logFile)
 
-	fun rectangle(block: ShapeObject.() -> Unit) {
-		val so = ShapeObject(ColorResource.西木野真姬, FRectangle(50, 50))
+	fun rectangle(block: DSLShapeObject.() -> Unit) {
+		val so = DSLShapeObject(ColorResource.西木野真姬, FRectangle(50, 50))
 		block(so)
 		addObject(so)
 	}
 
-	fun oval(block: ShapeObject.() -> Unit) {
-		val so = ShapeObject(ColorResource.西木野真姬, FOval(25.0, 25.0))
+	fun oval(block: DSLShapeObject.() -> Unit) {
+		val so = DSLShapeObject(ColorResource.西木野真姬, FOval(25.0, 25.0))
 		block(so)
 		addObject(so)
 	}

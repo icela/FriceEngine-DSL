@@ -10,6 +10,9 @@ import org.frice.game.utils.graphics.shape.FShape
  * @author ice1000
  */
 class DSLShapeObject(res: ColorResource, shape: FShape) : ShapeObject(res, shape) {
-	val color: ColorResource
+	var color: ColorResource
 		get() = res
+		set(value) {
+			res = value
+		}
 }

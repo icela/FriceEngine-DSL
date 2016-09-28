@@ -20,12 +20,26 @@ fun main(args: Array<String>) {
 			closeWindow()
 		}
 
+		// called when scene has refreshed
+		whenUpdate {
+			// if 800ms has past
+			if (800.elapsed()) {
+				rectangle {
+					// elapsed = millis second from game create
+					x = elapsed / 10.0
+					y = elapsed / 10.0
+					// colors are represented CAPITALLY.
+					color = PINK
+				}
+			}
+		}
+
 		// will be invoked every 1000ms
 		every(1000) {
 			oval {
-				// elapsed = millis second from game create
 				x = elapsed / 10.0
 				y = elapsed / 10.0
+				color = ORANGE
 			}
 			// write logs into a file "frice.log"
 			log("1 second has past.")
@@ -83,3 +97,8 @@ fun main(args: Array<String>) {
 See? The syntax looks like the one Gradle scripts, but more powerful, clear and easy.
 
 And they are all **valid Kotlin codes**.
+
+# How to use
+
+Simply using Kotlin compiler **kotlinc** to compile your code, with classpath directing this project and the jar of FriceEngine.
+

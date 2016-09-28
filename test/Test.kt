@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 				rectangle {
 					x = elapsed / 10.0
 					y = elapsed / 10.0
-					setColor()
+					color = PINK
 				}
 			}
 		}
@@ -28,6 +28,7 @@ fun main(args: Array<String>) {
 			oval {
 				x = elapsed / 10.0
 				y = elapsed / 10.0
+				color = ORANGE
 			}
 			log("1 second has past.")
 		}
