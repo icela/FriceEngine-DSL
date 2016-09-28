@@ -26,6 +26,11 @@ fun main(args: Array<String>) { // a necessary main function
 			}
 			whenColliding("rectangle") {
 				stop()
+				x -= 5
+				accelerate {
+					x = -2.0
+					y = 10.0
+				}
 			}
 		}
 		image {

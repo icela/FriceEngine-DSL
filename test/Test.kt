@@ -8,9 +8,17 @@ import org.frice.dsl.game
  */
 fun main(args: Array<String>) {
 	game {
-//		size(10, 10)
 		bounds(500, 500, 800, 750)
 		showFPS = false
+
+		whenExit {
+			closeWindow()
+		}
+
+		whenUpdate {
+
+		}
+
 		rectangle {
 			name("rectangle")
 			x = 100.0
@@ -26,6 +34,11 @@ fun main(args: Array<String>) {
 			}
 			whenColliding("rectangle") {
 				stop()
+				x -= 5
+				accelerate {
+					x = -2.0
+					y = 10.0
+				}
 			}
 		}
 		image {

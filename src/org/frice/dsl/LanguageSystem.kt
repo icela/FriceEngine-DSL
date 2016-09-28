@@ -27,7 +27,14 @@ import java.util.*
  */
 class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 
+	companion object {
+		inline fun unless(condition: Boolean, block: () -> Unit) {
+			if (!condition) block()
+		}
+	}
+
 	var onExit: (() -> Unit)? = null
+	var onUpdate: (() -> Unit)? = null
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
 
 	/**
@@ -70,6 +77,14 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		addObject(st)
 	}
 
+	fun whenExit(block: () -> Unit) {
+		onExit = block
+	}
+
+	fun whenUpdate(block: () -> Unit) {
+		onUpdate = block
+	}
+
 	fun AbstractObject.name(s: String) = namedObjects.put(s, this)
 
 	fun ImageObject.file(s: String) {
@@ -86,9 +101,7 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		anims.add(AccurateMove(a.x, a.y))
 	}
 
-	fun FObject.stop() {
-		anims.clear()
-	}
+	fun FObject.stop() = anims.clear()
 
 	fun FObject.accelerate(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
@@ -104,20 +117,39 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 
 	fun FObject.whenColliding(
 			otherName: String,
-			block: PhysicalObject.(PhysicalObject) -> Unit) {
+			block: PhysicalObject.() -> Unit) {
 		val other = namedObjects[otherName]
 		if (other is PhysicalObject)
 			targets.add(Pair(other, object : FObject.OnCollideEvent {
-				override fun handle() = block(other, this@whenColliding)
+				override fun handle() = block(this@whenColliding)
 			}))
 	}
 
-	fun messageBox(msg: String) {
-		FDialog(this).show(msg)
+	fun AbstractObject.die() {
+		if (this is PhysicalObject) died = true
+		for (k in namedObjects.keys) {
+			if (this == namedObjects[k]) {
+				namedObjects.remove(k)
+				break
+			}
+		}
 	}
+
+	fun messageBox(msg: String) = FDialog(this).show(msg)
 
 	fun inputBox(msg: String) = FDialog(this).input(msg).toInt()
 
+	fun closeWindow() = System.exit(0)
+
+	override fun onExit() {
+		onExit?.invoke()
+		super.onExit()
+	}
+
+	override fun onRefresh() {
+		onUpdate?.invoke()
+		super.onRefresh()
+	}
 }
 
 @JvmName("game")
