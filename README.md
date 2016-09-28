@@ -20,6 +20,17 @@ fun main(args: Array<String>) {
 			closeWindow()
 		}
 
+		// will be invoked every 1000ms
+		every(1000) {
+			oval {
+				// elapsed = millis second from game create
+				x = elapsed / 10.0
+				y = elapsed / 10.0
+			}
+			// write logs into a file "frice.log"
+			log("1 second has past.")
+		}
+
 		// add a rectangle to the game scene
 		rectangle {
 			// name is an identifier of the game object.

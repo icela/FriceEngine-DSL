@@ -15,7 +15,13 @@ fun main(args: Array<String>) {
 		}
 
 		whenUpdate {
-
+			if (800.elapsed()) {
+				rectangle {
+					x = elapsed / 10.0
+					y = elapsed / 10.0
+					setColor()
+				}
+			}
 		}
 
 		every(1000) {
@@ -23,6 +29,7 @@ fun main(args: Array<String>) {
 				x = elapsed / 10.0
 				y = elapsed / 10.0
 			}
+			log("1 second has past.")
 		}
 
 		rectangle {

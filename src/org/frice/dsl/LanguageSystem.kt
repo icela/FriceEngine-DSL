@@ -33,6 +33,19 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		inline fun unless(condition: Boolean, block: () -> Unit) {
 			if (!condition) block()
 		}
+
+		val BLACK = ColorResource.BLACK
+		val BLUE = ColorResource.BLUE
+		val RED = ColorResource.RED
+		val PINK = ColorResource.PINK
+		val GREEN = ColorResource.GREEN
+		val GRAY = ColorResource.GRAY
+		val WHITE = ColorResource.WHITE
+		val YELLOW = ColorResource.YELLOW
+		val COLORLESS = ColorResource.COLORLESS
+		val CYAN = ColorResource.CYAN
+		val ORANGE = ColorResource.ORANGE
+		val MAGENTA = ColorResource.MAGENTA
 	}
 
 	var onExit: (() -> Unit)? = null
@@ -42,6 +55,9 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	val timer = FriceGameTimer()
 
 	val logFile = "frice.log"
+
+	val elapsed: Double
+		get() = timer.elapsed
 
 	/**
 	 * cannot be in 'onInit'
