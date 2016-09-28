@@ -1,6 +1,5 @@
 
 import org.frice.dsl.game
-import org.frice.game.anim.move.AccelerateMove
 
 /**
  * Created by ice1000 on 2016/9/28.
@@ -11,20 +10,32 @@ fun main(args: Array<String>) {
 	game {
 //		size(10, 10)
 		bounds(500, 500, 800, 750)
+		showFPS = false
 		rectangle {
+			name("rectangle")
 			x = 100.0
 			y = 100.0
 			width = 100.0
 		}
 		oval {
-			x = 30.0
-			y = 25.0
+			x = 0.0
+			y = 85.0
+			accelerate {
+				x = 10.0
+//				y = 10.0
+			}
+			whenColliding("rectangle") {
+				stop()
+			}
 		}
 		image {
 			file("C:/frice.png")
 			x = 200.0
 			y = 300.0
-			anims.add(AccelerateMove(-10.0, -10.0))
+			velocity {
+				x = -5.5
+//				y = -5.5
+			}
 		}
 	}
 }

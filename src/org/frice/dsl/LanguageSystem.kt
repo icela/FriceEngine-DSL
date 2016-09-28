@@ -4,7 +4,9 @@ import org.frice.game.Game
 import org.frice.game.anim.move.AccelerateMove
 import org.frice.game.anim.move.AccurateMove
 import org.frice.game.anim.move.DoublePair
+import org.frice.game.obj.AbstractObject
 import org.frice.game.obj.FObject
+import org.frice.game.obj.PhysicalObject
 import org.frice.game.obj.button.SimpleText
 import org.frice.game.obj.sub.ImageObject
 import org.frice.game.obj.sub.ShapeObject
@@ -12,8 +14,10 @@ import org.frice.game.resource.graphics.ColorResource
 import org.frice.game.resource.image.ImageResource
 import org.frice.game.utils.graphics.shape.FOval
 import org.frice.game.utils.graphics.shape.FRectangle
+import org.frice.game.utils.message.FDialog
 import java.awt.Dimension
 import java.awt.Rectangle
+import java.util.*
 
 /**
  * LanguageSystem framework of frice engine
@@ -24,6 +28,7 @@ import java.awt.Rectangle
 class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 
 	var onExit: (() -> Unit)? = null
+	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
 
 	/**
 	 * cannot be in 'onInit'
@@ -65,6 +70,8 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		addObject(st)
 	}
 
+	fun AbstractObject.name(s: String) = namedObjects.put(s, this)
+
 	fun ImageObject.file(s: String) {
 		res = ImageResource.fromPath(s)
 	}
@@ -75,19 +82,45 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 
 	fun FObject.velocity(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
-		block.invoke(a)
+		block(a)
 		anims.add(AccurateMove(a.x, a.y))
+	}
+
+	fun FObject.stop() {
+		anims.clear()
 	}
 
 	fun FObject.accelerate(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
-		block.invoke(a)
+		block(a)
 		anims.add(AccelerateMove(a.x, a.y))
 	}
+
+	fun FObject.force(block: DoublePair.() -> Unit) {
+		val a = DoublePair(0.0, 0.0)
+		block(a)
+		addForce(a)
+	}
+
+	fun FObject.whenColliding(
+			otherName: String,
+			block: PhysicalObject.(PhysicalObject) -> Unit) {
+		val other = namedObjects[otherName]
+		if (other is PhysicalObject)
+			targets.add(Pair(other, object : FObject.OnCollideEvent {
+				override fun handle() = block.invoke(other, this@whenColliding)
+			}))
+	}
+
+	fun messageBox(msg: String) {
+		FDialog(this).show(msg)
+	}
+
+	fun inputBox(msg: String) = FDialog(this).input(msg).toInt()
 
 }
 
 @JvmName("game")
 fun game(block: LanguageSystem.() -> Unit) {
-	val dsl = LanguageSystem(block)
+	LanguageSystem(block)
 }
