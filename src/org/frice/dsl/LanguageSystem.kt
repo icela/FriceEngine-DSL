@@ -99,7 +99,7 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	fun FObject.force(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
 		block(a)
-		addForce(a)
+		addForce(a.x, a.y)
 	}
 
 	fun FObject.whenColliding(
@@ -108,7 +108,7 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		val other = namedObjects[otherName]
 		if (other is PhysicalObject)
 			targets.add(Pair(other, object : FObject.OnCollideEvent {
-				override fun handle() = block.invoke(other, this@whenColliding)
+				override fun handle() = block(other, this@whenColliding)
 			}))
 	}
 
