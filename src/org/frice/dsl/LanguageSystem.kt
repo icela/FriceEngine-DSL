@@ -78,7 +78,7 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	fun log(s: String) {
 		val f = File(logFile)
 		if (!f.exists()) f.createNewFile()
-		f.appendText(s)
+		f.appendText("$s\n")
 	}
 
 	fun rectangle(block: DSLShapeObject.() -> Unit) {
