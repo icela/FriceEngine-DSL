@@ -1,5 +1,9 @@
 # Frice DSL
 
+![](https://avatars1.githubusercontent.com/u/21008243)
+
+[![](https://jitpack.io/v/icela/FriceEngine-DSL.svg)](https://jitpack.io/#icela/FriceEngine-DSL)
+
 This is a DSL system for FriceEngine.<br/>
 And it's written in **Kotlin**.
 
