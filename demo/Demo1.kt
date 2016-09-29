@@ -9,19 +9,28 @@ import org.frice.dsl.game
 fun main(args: Array<String>) {
 	game {
 		bounds(100, 100, 500, 500)
+		title = "game demo"
 
 		oval {
 			x = 30.0
-			y = 30.0
-			width = 100.0
 			height = 80.0
 			color = PINK
 		}
 
 		image {
 			url("https://avatars1.githubusercontent.com/u/21008243")
-			x = 120.0
 			y = 120.0
+			velocity {
+				y = 10.0
+			}
+		}
+
+		rectangle {
+			x = 300.0
+			height = 50.0
+			velocity {
+				x = 10.0
+			}
 		}
 	}
 }

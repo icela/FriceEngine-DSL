@@ -1,20 +1,24 @@
 package org.frice.dsl
 
 import org.frice.dsl.extension.DSLShapeObject
+import org.frice.dsl.scala.Traits
 import org.frice.game.Game
 import org.frice.game.anim.move.AccelerateMove
 import org.frice.game.anim.move.AccurateMove
 import org.frice.game.anim.move.DoublePair
+import org.frice.game.event.OnClickEvent
 import org.frice.game.obj.AbstractObject
 import org.frice.game.obj.FObject
 import org.frice.game.obj.PhysicalObject
 import org.frice.game.obj.button.SimpleText
 import org.frice.game.obj.sub.ImageObject
+import org.frice.game.obj.sub.ShapeObject
 import org.frice.game.resource.graphics.ColorResource
 import org.frice.game.resource.image.ImageResource
 import org.frice.game.utils.graphics.shape.FOval
 import org.frice.game.utils.graphics.shape.FRectangle
 import org.frice.game.utils.message.FDialog
+import org.frice.game.utils.misc.forceRun
 import org.frice.game.utils.time.FTimeListener
 import java.awt.Dimension
 import java.awt.Rectangle
@@ -49,8 +53,10 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	val MAGENTA = ColorResource.MAGENTA
 
 	var onExit: (() -> Unit)? = null
+	var onClick: ((AbstractObject) -> Unit)? = null
 	var onUpdate: (() -> Unit)? = null
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
+	val namedTraits = LinkedHashMap<String, Traits>(20)
 
 	val timer = FriceGameTimer()
 
@@ -113,16 +119,30 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		onUpdate = block
 	}
 
+	fun whenClicked(block: AbstractObject.() -> Unit) {
+		onClick = block
+	}
+
 	fun every(millisSeconds: Int, block: FriceGameTimer.() -> Unit) {
 		addTimeListener(FTimeListener(millisSeconds, {
 			block(timer)
 		}))
 	}
 
+	fun tell(name: String, block: FObject.() -> Unit) {
+		forceRun {
+			block.invoke(namedObjects[name] as FObject)
+		}
+	}
+
 	fun Long.elapsed() = timer.stopWatch(this)
 	fun Int.elapsed() = timer.stopWatch(this.toLong())
 	infix fun Long.from(begin: Long) = this - begin
 	infix fun Int.from(begin: Int) = this - begin
+
+	infix fun Int.randomTo(int: Int) = (random.nextInt(int - this) + this).toDouble()
+	infix fun Int.randomDownTo(int: Int) = (random.nextInt(this - int) + int).toDouble()
+
 
 	fun AbstractObject.name(s: String) = namedObjects.put(s, this)
 
@@ -164,6 +184,31 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 			}))
 	}
 
+	fun AbstractObject.include(name: String) {
+		forceRun {
+			val t = namedTraits[name]!!
+			if (t.x != null) x = t.x!!
+			if (t.y != null) y = t.y!!
+		}
+	}
+
+	fun ShapeObject.include(name: String) {
+		forceRun {
+			val t = namedTraits[name]!!
+			if (t.x != null) x = t.x!!
+			if (t.y != null) y = t.y!!
+			if (t.color != null) res = t.color!!
+			if (t.width != null) width = t.width!!
+			if (t.height != null) height = t.height!!
+		}
+	}
+
+	fun traits(name: String, block: Traits.() -> Unit) {
+		val t = Traits(name)
+		block(t)
+		namedTraits.put(t.name, t)
+	}
+
 	fun AbstractObject.die() {
 		if (this is PhysicalObject) died = true
 		for (k in namedObjects.keys) {
@@ -176,7 +221,9 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 
 	fun messageBox(msg: String) = FDialog(this).show(msg)
 
-	fun inputBox(msg: String) = FDialog(this).input(msg).toInt()
+	fun inputInt(msg: String) = FDialog(this).input(msg).toInt()
+
+	fun inputString(msg: String) = FDialog(this).input(msg)
 
 	fun closeWindow() = System.exit(0)
 
@@ -189,9 +236,15 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		onUpdate?.invoke()
 		super.onRefresh()
 	}
+
+	override fun onClick(e: OnClickEvent) {
+		onClick?.invoke(mouse)
+		super.onClick(e)
+	}
 }
 
 @JvmName("game")
 fun game(block: LanguageSystem.() -> Unit) {
 	LanguageSystem(block)
 }
+
