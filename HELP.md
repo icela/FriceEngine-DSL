@@ -2,6 +2,10 @@
 
 Here is the commented demo from README.
 
+# Language
+
+[简体中文](./HELP_ZH.md)
+
 ```kotlin
 /* C-style comments are allowed */
 // a necessary main function
