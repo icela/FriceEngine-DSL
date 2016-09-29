@@ -80,7 +80,32 @@ And they are all **VALID Kotlin codes**. U can even compile them directly with *
 
 # How to use
 
+### simplest
+
 Simply using Kotlin compiler **kotlinc** to compile your code, with classpath directing this project and the jar of FriceEngine.
 
 please wait for the release, after that U can import a jar into your IDE and use it.
 
+
+### Recommended
+
+Gradle is strongly recommended!
+
+```groovy
+// build.gradle:
+
+dependencies {
+    compile 'com.github.icela:FriceEngine-DSL:v0.1'
+}
+
+
+// global gradle file
+
+allprojects {
+    repositories {
+        // ...
+        maven { url "https://jitpack.io" }
+    }
+}
+
+```
