@@ -84,6 +84,12 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		bounds = Rectangle(x, y, width, height)
 	}
 
+	fun bounds(block: Rectangle.() -> Unit) {
+		val t = Rectangle(x, y, width, height)
+		block(t)
+		bounds(t.x, t.y, t.width, t.height)
+	}
+
 	fun log(s: String) {
 		val f = File(logFile)
 		if (!f.exists()) f.createNewFile()

@@ -20,3 +20,5 @@ class Traits(val name: String) {
 //	val targets = LinkedList<kotlin.Pair<PhysicalObject, FObject.OnCollideEvent>>()
 //	val anims = LinkedList <FAnim>()
 }
+
+

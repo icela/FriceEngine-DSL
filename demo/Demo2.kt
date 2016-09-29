@@ -8,8 +8,13 @@ import org.frice.dsl.game
  */
 
 fun main(args: Array<String>) = game {
-	bounds(100, 100, 400, 500)
 	title = "flappy bird demo by ice1000"
+	bounds {
+		x = 100
+		y = 100
+		width = 400
+		height = 500
+	}
 
 	whenExit { closeWindow() }
 
