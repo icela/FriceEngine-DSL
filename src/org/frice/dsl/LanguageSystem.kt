@@ -10,6 +10,9 @@ import org.frice.game.event.OnClickEvent
 import org.frice.game.obj.AbstractObject
 import org.frice.game.obj.FObject
 import org.frice.game.obj.PhysicalObject
+import org.frice.game.obj.button.FButton
+import org.frice.game.obj.button.ImageButton
+import org.frice.game.obj.button.SimpleButton
 import org.frice.game.obj.button.SimpleText
 import org.frice.game.obj.sub.ImageObject
 import org.frice.game.obj.sub.ShapeObject
@@ -111,6 +114,18 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		addObject(st)
 	}
 
+	fun button(block: SimpleButton.() -> Unit) {
+		val sb = SimpleButton("", 0.0, 0.0, 80.0, 30.0)
+		block(sb)
+		addObject(sb)
+	}
+
+	fun imageButton(block: ImageButton.() -> Unit) {
+		val ib = ImageButton(ImageResource.empty(), 0.0, 0.0)
+		block(ib)
+		addObject(ib)
+	}
+
 	fun whenExit(block: () -> Unit) {
 		onExit = block
 	}
@@ -160,6 +175,12 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		anims.add(AccurateMove(a.x, a.y))
 	}
 
+//	fun Traits.velocity(block: DoublePair.() -> Unit) {
+//		val a = DoublePair(0.0, 0.0)
+//		block(a)
+//		anims.add(AccurateMove(a.x, a.y))
+//	}
+
 	fun FObject.stop() = anims.clear()
 
 	fun FObject.accelerate(block: DoublePair.() -> Unit) {
@@ -168,10 +189,22 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		anims.add(AccelerateMove(a.x, a.y))
 	}
 
+//	fun Traits.accelerate(block: DoublePair.() -> Unit) {
+//		val a = DoublePair(0.0, 0.0)
+//		block(a)
+//		anims.add(AccelerateMove(a.x, a.y))
+//	}
+
 	fun FObject.force(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
 		block(a)
 		addForce(a.x, a.y)
+	}
+
+	fun FButton.whenClicked(block: (OnClickEvent) -> Unit) {
+		onClickListener = object : FButton.OnClickListener {
+			override fun onClick(e: OnClickEvent) = block(e)
+		}
 	}
 
 	fun FObject.whenColliding(
@@ -183,6 +216,17 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 				override fun handle() = block(this@whenColliding)
 			}))
 	}
+
+//	fun Traits.whenColliding(
+//			otherName: String,
+//			block: () -> Unit) {
+//		val other = namedObjects[otherName]
+//		if (other is PhysicalObject)
+//			targets.add(Pair(other, object : FObject.OnCollideEvent {
+//				override fun handle() = block()
+//			}))
+//	}
+
 
 	fun AbstractObject.include(name: String) {
 		forceRun {
@@ -198,6 +242,30 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 			if (t.x != null) x = t.x!!
 			if (t.y != null) y = t.y!!
 			if (t.color != null) res = t.color!!
+			if (t.width != null) width = t.width!!
+			if (t.height != null) height = t.height!!
+//			anims.addAll(t.anims)
+//			targets.addAll(t.targets)
+		}
+	}
+
+	fun SimpleText.include(name: String) {
+		forceRun {
+			val t = namedTraits[name]!!
+			if (t.x != null) x = t.x!!
+			if (t.y != null) y = t.y!!
+			if (t.color != null) colorResource = t.color!!
+			if (t.text != null) text = t.text!!
+		}
+	}
+
+	fun SimpleButton.include(name: String) {
+		forceRun {
+			val t = namedTraits[name]!!
+			if (t.x != null) x = t.x!!
+			if (t.y != null) y = t.y!!
+			if (t.color != null) colorResource = t.color!!
+			if (t.text != null) text = t.text!!
 			if (t.width != null) width = t.width!!
 			if (t.height != null) height = t.height!!
 		}

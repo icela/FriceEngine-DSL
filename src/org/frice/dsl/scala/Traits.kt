@@ -16,4 +16,7 @@ class Traits(val name: String) {
 	var width: Double? = null
 	var height: Double? = null
 	var text: String? = null
+
+//	val targets = LinkedList<kotlin.Pair<PhysicalObject, FObject.OnCollideEvent>>()
+//	val anims = LinkedList <FAnim>()
 }
