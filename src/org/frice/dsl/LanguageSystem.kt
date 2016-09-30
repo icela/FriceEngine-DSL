@@ -253,7 +253,7 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 				Pair(namedObjects[target.string]!! as PhysicalObject,
 						object : FObject.OnCollideEvent {
 							override fun handle() {
-								target.event
+								target.event.invoke()
 							}
 						})
 			})

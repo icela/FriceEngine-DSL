@@ -41,6 +41,10 @@ fun main(args: Array<String>) = game {
 		width = 50.0
 		height = 200.0
 		velocity { x = -120.0 }
+		whenColliding("BlankJ") {
+			tell("BlankJ") { stop() }
+			text { include("text") }
+		}
 	}
 	traits("text") {
 		x = 200.0
@@ -52,18 +56,11 @@ fun main(args: Array<String>) = game {
 		rectangle {
 			include("block")
 			height = 50 randomTo 250
-			whenColliding("BlankJ") {
-				tell("BlankJ") { stop() }
-				text { include("text") }
-			}
 		}
 		rectangle {
 			include("block")
 			y = 300 randomTo 450
-			whenColliding("BlankJ") {
-				tell("BlankJ") { stop() }
-				text { include("text") }
-			}
+
 		}
 	}
 }
