@@ -154,9 +154,17 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	}
 
 	fun tell(name: String, block: FObject.() -> Unit) {
-		forceRun {
+		if (namedObjects.contains(name))
 			block.invoke(namedObjects[name] as FObject)
-		}
+		else
+			throw DSLErrorException()
+	}
+
+	fun kill(name: String) {
+		if (namedObjects.contains(name))
+			namedObjects[name]!!.die()
+		else
+			throw DSLErrorException()
 	}
 
 	fun Long.elapsed() = timer.stopWatch(this)

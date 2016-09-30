@@ -42,7 +42,7 @@ fun main(args: Array<String>) = game {
 		height = 200.0
 		velocity { x = -120.0 }
 		whenColliding("BlankJ") {
-			tell("BlankJ") { stop() }
+			kill("BlankJ")
 			text { include("text") }
 		}
 	}
