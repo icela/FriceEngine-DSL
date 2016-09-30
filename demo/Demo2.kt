@@ -21,12 +21,8 @@ fun main(args: Array<String>) = game {
 	whenClicked {
 		tell("BlankJ") {
 			stop()
-			velocity {
-				y = -300.0
-			}
-			accelerate {
-				y = 10.0
-			}
+			velocity { y = -300.0 }
+			accelerate { y = 10.0 }
 		}
 	}
 
@@ -57,24 +53,16 @@ fun main(args: Array<String>) = game {
 			include("block")
 			height = 50 randomTo 250
 			whenColliding("BlankJ") {
-				tell("BlankJ") {
-					stop()
-				}
-				text {
-					include("text")
-				}
+				tell("BlankJ") { stop() }
+				text { include("text") }
 			}
 		}
 		rectangle {
 			include("block")
 			y = 300 randomTo 450
 			whenColliding("BlankJ") {
-				tell("BlankJ") {
-					stop()
-				}
-				text {
-					include("text")
-				}
+				tell("BlankJ") { stop() }
+				text { include("text") }
 			}
 		}
 	}
