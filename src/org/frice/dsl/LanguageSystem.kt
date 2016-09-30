@@ -1,6 +1,9 @@
 package org.frice.dsl
 
 import org.frice.dsl.extension.DSLShapeObject
+import org.frice.dsl.scala.AccelerateMoveForTraits
+import org.frice.dsl.scala.AccurateMoveForTraits
+import org.frice.dsl.scala.FTargetForTraits
 import org.frice.dsl.scala.Traits
 import org.frice.game.Game
 import org.frice.game.anim.move.AccelerateMove
@@ -181,11 +184,11 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		anims.add(AccurateMove(a.x, a.y))
 	}
 
-//	fun Traits.velocity(block: DoublePair.() -> Unit) {
-//		val a = DoublePair(0.0, 0.0)
-//		block(a)
-//		anims.add(AccurateMove(a.x, a.y))
-//	}
+	fun Traits.velocity(block: AccurateMoveForTraits.() -> Unit) {
+		val a = AccurateMoveForTraits(0.0, 0.0)
+		block(a)
+		anims.add(a)
+	}
 
 	fun FObject.stop() = anims.clear()
 
@@ -195,11 +198,11 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		anims.add(AccelerateMove(a.x, a.y))
 	}
 
-//	fun Traits.accelerate(block: DoublePair.() -> Unit) {
-//		val a = DoublePair(0.0, 0.0)
-//		block(a)
-//		anims.add(AccelerateMove(a.x, a.y))
-//	}
+	fun Traits.accelerate(block: AccelerateMoveForTraits.() -> Unit) {
+		val a = AccelerateMoveForTraits(0.0, 0.0)
+		block(a)
+		anims.add(a)
+	}
 
 	fun FObject.force(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
@@ -223,15 +226,11 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 			}))
 	}
 
-//	fun Traits.whenColliding(
-//			otherName: String,
-//			block: () -> Unit) {
-//		val other = namedObjects[otherName]
-//		if (other is PhysicalObject)
-//			targets.add(Pair(other, object : FObject.OnCollideEvent {
-//				override fun handle() = block()
-//			}))
-//	}
+	fun Traits.whenColliding(
+			otherName: String,
+			block: () -> Unit) {
+		targets.add(FTargetForTraits(otherName, block))
+	}
 
 
 	fun AbstractObject.include(name: String) {
@@ -250,8 +249,17 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 			if (t.color != null) res = t.color!!
 			if (t.width != null) width = t.width!!
 			if (t.height != null) height = t.height!!
-//			anims.addAll(t.anims)
-//			targets.addAll(t.targets)
+			targets.addAll(t.targets.map { target ->
+				Pair(namedObjects[target.string]!! as PhysicalObject,
+						object : FObject.OnCollideEvent {
+							override fun handle() {
+								target.event
+							}
+						})
+			})
+			anims.addAll(t.anims.map { anim ->
+				anim.new()
+			})
 		}
 	}
 
@@ -316,6 +324,8 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		super.onClick(e)
 	}
 }
+
+class DSLErrorException() : Exception("Error DSL!")
 
 @JvmName("game")
 fun game(block: LanguageSystem.() -> Unit) {

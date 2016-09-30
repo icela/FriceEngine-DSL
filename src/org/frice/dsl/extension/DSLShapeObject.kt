@@ -5,6 +5,7 @@ import org.frice.game.resource.graphics.ColorResource
 import org.frice.game.utils.graphics.shape.FShape
 
 /**
+ * Provide sth that is needed by DSL
  * Created by ice1000 on 2016/9/29.
  *
  * @author ice1000
