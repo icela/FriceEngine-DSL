@@ -21,6 +21,7 @@ import org.frice.game.obj.sub.ImageObject
 import org.frice.game.obj.sub.ShapeObject
 import org.frice.game.resource.graphics.ColorResource
 import org.frice.game.resource.image.ImageResource
+import org.frice.game.utils.data.FileUtils
 import org.frice.game.utils.graphics.shape.FOval
 import org.frice.game.utils.graphics.shape.FRectangle
 import org.frice.game.utils.message.FDialog
@@ -316,6 +317,11 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	fun inputString(msg: String) = FDialog(this).input(msg)
 
 	fun closeWindow() = System.exit(0)
+
+	fun cutScreen() = FileUtils.image2File(
+			getScreenCut().image,
+			"screenshot.png"
+	)
 
 	override fun onExit() {
 		onExit?.invoke()

@@ -25,6 +25,15 @@ fun main(args: Array<String>) {
 			}
 		}
 
+		button {
+			x = 100.0
+			y = 40.0
+			text = "button"
+			whenClicked {
+				messageBox("clicked")
+			}
+		}
+
 		rectangle {
 			x = 300.0
 			height = 50.0
