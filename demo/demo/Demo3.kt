@@ -11,6 +11,10 @@ import org.frice.dsl.game
 fun main(args: Array<String>) {
 	game {
 		autoGC = true
+		showFPS = false
+		var gg = false
+
+		whenExit { closeWindow() }
 
 		bounds {
 			x = 100
@@ -19,15 +23,40 @@ fun main(args: Array<String>) {
 			height = 500
 		}
 
+		rectangle {
+			name("wall")
+			y = 500.0
+			width = 400.0
+			height = 10.0
+		}
+
 		traits("block") {
+			y = -200.0
 			width = 100.0
 			height = 120.0
 			color = BLACK
+			velocity {
+				y = 480.0
+			}
+			whenColliding("wall") {
+//				messageBox("GG!")
+				text {
+					text = "GG!"
+					x = 150.0
+					y = 200.0
+				}
+				gg = true
+			}
 		}
 
-		every(1500) {
-			button {
+		if (!gg) every(250) {
+			requestGC()
+			rectangle {
+				x = (0 randomTo 3) * 100.0
 				include("block")
+				whenPressed {
+					x = -1000.0
+				}
 			}
 		}
 	}

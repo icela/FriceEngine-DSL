@@ -12,6 +12,7 @@ fun main(args: Array<String>) {
 	game {
 		bounds(100, 100, 500, 500)
 		title = "game demo"
+		showFPS = false
 
 		oval {
 			x = 30.0

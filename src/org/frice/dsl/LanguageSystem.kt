@@ -10,6 +10,7 @@ import org.frice.game.anim.move.AccelerateMove
 import org.frice.game.anim.move.AccurateMove
 import org.frice.game.anim.move.DoublePair
 import org.frice.game.event.OnClickEvent
+import org.frice.game.event.OnMouseEvent
 import org.frice.game.obj.AbstractObject
 import org.frice.game.obj.FObject
 import org.frice.game.obj.PhysicalObject
@@ -60,10 +61,18 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	val MAGENTA = ColorResource.MAGENTA
 
 	var onExit: (() -> Unit)? = null
-	var onClick: ((AbstractObject) -> Unit)? = null
+
+	var onClick = ArrayList<(AbstractObject) -> Unit>(20)
+
+	var onPress = ArrayList<(AbstractObject) -> Unit>(5)
+
 	var onUpdate: (() -> Unit)? = null
+
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
+
 	val namedTraits = LinkedHashMap<String, Traits>(20)
+
+	val clickListeningObjects = LinkedHashMap<String, FObject>(20)
 
 	val timer = FriceGameTimer()
 
@@ -79,6 +88,8 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		super.onLastInit()
 		block.invoke(this)
 	}
+
+	fun requestGC() = System.gc()
 
 	fun size(width: Int, height: Int) {
 		size = Dimension(width, height)
@@ -145,7 +156,7 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	}
 
 	fun whenClicked(block: AbstractObject.() -> Unit) {
-		onClick = block
+		onClick.add(block)
 	}
 
 	fun every(millisSeconds: Int, block: FriceGameTimer.() -> Unit) {
@@ -197,6 +208,26 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 		val a = AccurateMoveForTraits(0.0, 0.0)
 		block(a)
 		anims.add(a)
+	}
+
+	fun FObject.whenClicked(block: () -> Unit) {
+		forceRun {
+			onClick.add { e ->
+				if (containsPoint(e.x.toInt(), e.y.toInt())) {
+					block()
+				}
+			}
+		}
+	}
+
+	fun FObject.whenPressed(block: () -> Unit) {
+		forceRun {
+			onPress.add { e ->
+				if (containsPoint(e.x.toInt(), e.y.toInt())) {
+					block()
+				}
+			}
+		}
 	}
 
 	fun FObject.stop() = anims.clear()
@@ -334,8 +365,19 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	}
 
 	override fun onClick(e: OnClickEvent) {
-		onClick?.invoke(mouse)
+		onClick.forEach { o ->
+			o.invoke(mouse)
+		}
 		super.onClick(e)
+	}
+
+	override fun onMouse(e: OnMouseEvent) {
+		when (e.type()) {
+			OnMouseEvent.MOUSE_PRESSED -> onPress.forEach { o ->
+				o.invoke(mouse)
+			}
+		}
+		super.onMouse(e)
 	}
 }
 
