@@ -374,7 +374,9 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	override fun onMouse(e: OnMouseEvent) {
 		when (e.type()) {
 			OnMouseEvent.MOUSE_PRESSED -> onPress.forEach { o ->
-				o.invoke(mouse)
+				forceRun {
+					o.invoke(mouse)
+				}
 			}
 		}
 		super.onMouse(e)

@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 Class-Path: dsl.jar
-Main-Class: demo.Demo2Kt
+Main-Class: demo.Demo3Kt
 
