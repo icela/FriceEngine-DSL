@@ -11,7 +11,7 @@
 ```kotlin
 /* 允许使用C语言风格的注释 */
 // main方法是必须的
-fun main(args: Array<String>) {
+fun demo.main(args: Array<String>) {
 	// 创建一个游戏窗口（这意味着你可以通过多个game代码块来创建多个窗口
 	game {
 //		size(10, 10)
@@ -102,7 +102,7 @@ fun main(args: Array<String>) {
 ## flappy bird
 
 ```kotlin
-fun main(args: Array<String>) = game {
+fun demo.main(args: Array<String>) = game {
 	bounds(100, 100, 400, 500)
 	title = "flappy bird demo by ice1000"
 

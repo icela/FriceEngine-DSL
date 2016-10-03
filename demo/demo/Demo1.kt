@@ -1,3 +1,5 @@
+package demo
+
 import org.frice.dsl.game
 
 /**
