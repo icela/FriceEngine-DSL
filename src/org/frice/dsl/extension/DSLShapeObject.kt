@@ -2,7 +2,7 @@ package org.frice.dsl.extension
 
 import org.frice.game.obj.sub.ShapeObject
 import org.frice.game.resource.graphics.ColorResource
-import org.frice.game.utils.graphics.shape.FShape
+import org.frice.game.utils.graphics.shape.FShapeInt
 
 /**
  * Provide sth that is needed by DSL
@@ -10,7 +10,7 @@ import org.frice.game.utils.graphics.shape.FShape
  *
  * @author ice1000
  */
-class DSLShapeObject(res: ColorResource, shape: FShape) : ShapeObject(res, shape) {
+class DSLShapeObject(res: ColorResource, shape: FShapeInt) : ShapeObject(res, shape) {
 	var color: ColorResource
 		get() = res
 		set(value) {
