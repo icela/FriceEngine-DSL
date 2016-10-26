@@ -297,8 +297,8 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 							}
 						})
 			})
-			anims.addAll(t.anims.map { anim ->
-				anim.new()
+			anims.addAll(t.anims.map { animation ->
+				animation.new()
 			})
 		}
 	}
@@ -385,7 +385,7 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 
 class DSLErrorException() : Exception("Error DSL!")
 
-@JvmName("game")
+@JvmName("gameInPackage")
 fun game(block: LanguageSystem.() -> Unit) {
 	LanguageSystem(block)
 }
