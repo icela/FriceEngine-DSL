@@ -1,10 +1,6 @@
 package org.frice.dsl
 
-import org.frice.dsl.extension.DSLShapeObject
-import org.frice.dsl.scala.AccelerateMoveForTraits
-import org.frice.dsl.scala.AccurateMoveForTraits
-import org.frice.dsl.scala.FTargetForTraits
-import org.frice.dsl.scala.Traits
+import org.frice.dsl.extension.*
 import org.frice.game.Game
 import org.frice.game.anim.move.AccelerateMove
 import org.frice.game.anim.move.AccurateMove
@@ -34,12 +30,12 @@ import java.io.File
 import java.util.*
 
 /**
- * LanguageSystem framework of frice engine
+ * FriceBase framework of frice engine
  * Created by ice1000 on 2016/9/28.
  *
  * @author ice1000
  */
-class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
+class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	companion object {
 		inline fun unless(condition: Boolean, block: () -> Unit) {
@@ -59,6 +55,11 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	val CYAN = ColorResource.CYAN
 	val ORANGE = ColorResource.ORANGE
 	val MAGENTA = ColorResource.MAGENTA
+
+// waiting for Kotlin to provide this feature
+//	operator fun unknownMethodCall(name: String, block: FriceBase.() -> Unit) {
+//
+//	}
 
 	var onExit: (() -> Unit)? = null
 
@@ -182,11 +183,16 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 	fun Long.elapsed() = timer.stopWatch(this)
 	fun Int.elapsed() = timer.stopWatch(this.toLong())
 	infix fun Long.from(begin: Long) = this - begin
+	infix fun Long.from(begin: Int) = this - begin
 	infix fun Int.from(begin: Int) = this - begin
+	infix fun Int.from(begin: Long) = this - begin
+	infix fun Int.to(int: Int) = rangeTo(int)
+	infix fun Int.to(int: Long) = rangeTo(int)
+	infix fun Long.to(long: Long) = rangeTo(long)
+	infix fun Long.to(long: Int) = rangeTo(long)
 
 	infix fun Int.randomTo(int: Int) = (random.nextInt(int - this) + this).toDouble()
 	infix fun Int.randomDownTo(int: Int) = (random.nextInt(this - int) + int).toDouble()
-
 
 	fun AbstractObject.name(s: String) = namedObjects.put(s, this)
 
@@ -386,7 +392,7 @@ class LanguageSystem(val block: LanguageSystem.() -> Unit) : Game() {
 class DSLErrorException() : Exception("Error DSL!")
 
 @JvmName("gameInPackage")
-fun game(block: LanguageSystem.() -> Unit) {
-	LanguageSystem(block)
+fun game(block: FriceBase.() -> Unit) {
+	FriceBase(block)
 }
 

@@ -1,4 +1,4 @@
-package org.frice.dsl.scala
+package org.frice.dsl.extension
 
 import org.frice.game.anim.move.AccelerateMove
 import org.frice.game.anim.move.AccurateMove

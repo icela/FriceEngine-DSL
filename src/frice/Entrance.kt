@@ -1,6 +1,6 @@
 package frice
 
-import org.frice.dsl.LanguageSystem
+import org.frice.dsl.FriceBase
 
 /**
  * Created by ice1000 on 2016/10/26.
@@ -9,7 +9,7 @@ import org.frice.dsl.LanguageSystem
  */
 
 @JvmName("game")
-fun game(block: LanguageSystem.() -> Unit) {
-    LanguageSystem(block)
+fun game(block: FriceBase.() -> Unit) {
+    FriceBase(block)
 }
 
