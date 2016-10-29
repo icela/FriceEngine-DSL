@@ -35,7 +35,7 @@ import java.util.*
  *
  * @author ice1000
  */
-class FriceBase(val block: FriceBase.() -> Unit) : Game() {
+open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	companion object {
 		inline fun unless(condition: Boolean, block: () -> Unit) {
@@ -118,10 +118,11 @@ class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		addObject(so)
 	}
 
-	fun oval(block: DSLShapeObject.() -> Unit) {
+	fun oval(block: DSLShapeObject.() -> Unit): DSLShapeObject {
 		val so = DSLShapeObject(ColorResource.西木野真姬, FOval(25.0, 25.0))
 		block(so)
 		addObject(so)
+		return so
 	}
 
 	fun image(block: ImageObject.() -> Unit) {
@@ -169,13 +170,12 @@ class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun tell(name: String, block: FObject.() -> Unit) {
 		if (namedObjects.contains(name))
 			block.invoke(namedObjects[name] as FObject)
-		else
-			throw DSLErrorException()
+		else throw DSLErrorException()
 	}
 
 	fun kill(name: String) {
 		if (namedObjects.contains(name))
-			namedObjects[name]!!.die()
+			namedObjects[name]!!.die
 		else
 			throw DSLErrorException()
 	}
@@ -237,6 +237,8 @@ class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun FObject.stop() = anims.clear()
+	val FObject.stop: Unit
+		get() = stop()
 
 	fun FObject.accelerate(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
@@ -303,9 +305,7 @@ class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 							}
 						})
 			})
-			anims.addAll(t.anims.map { animation ->
-				animation.new()
-			})
+			anims.addAll(t.anims.map(FAnimForTraits::new))
 		}
 	}
 
@@ -347,6 +347,9 @@ class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		}
 	}
 
+	val AbstractObject.die: Unit
+		get() = die()
+
 	fun messageBox(msg: String) = FDialog(this).show(msg)
 
 	fun inputInt(msg: String) = FDialog(this).input(msg).toInt()
@@ -354,11 +357,16 @@ class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun inputString(msg: String) = FDialog(this).input(msg)
 
 	fun closeWindow() = System.exit(0)
+	val closeWindow: Unit
+		get () = closeWindow()
 
 	fun cutScreen() = FileUtils.image2File(
 			getScreenCut().image,
 			"screenshot.png"
 	)
+
+	val cutScreen: Boolean
+		get() = cutScreen()
 
 	override fun onExit() {
 		onExit?.invoke()

@@ -8,8 +8,8 @@ Here is the commented demo from README.
 
 ```kotlin
 /* C-style comments are allowed */
-// a necessary demo.main function
-fun demo.main(args: Array<String>) {
+// a necessary main function
+fun main(args: Array<String>) {
 	// create a game window(this means you can create more than one window simply by using more than one "game" block.
 	game {
 //		size(10, 10)
@@ -64,7 +64,7 @@ fun demo.main(args: Array<String>) {
 				x = 10.0
 //				y = 10.0
 			}
-			// when colliding the object naming of the given string("rectangle" here), the code in the block will be called.
+			// when colliding the object naming of the given msg("rectangle" here), the code in the block will be called.
 			whenColliding("rectangle") {
 				// stop moving
 				stop()
@@ -99,7 +99,7 @@ fun demo.main(args: Array<String>) {
 ## flappy bird
 
 ```kotlin
-fun demo.main(args: Array<String>) = game {
+fun main(args: Array<String>) = game {
 	bounds(100, 100, 400, 500)
 	title = "flappy bird demo by ice1000"
 
