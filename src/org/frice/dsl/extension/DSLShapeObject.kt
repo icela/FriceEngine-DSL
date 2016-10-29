@@ -17,3 +17,4 @@ class DSLShapeObject(res: ColorResource, shape: FShapeInt) : ShapeObject(res, sh
 			res = value
 		}
 }
+
