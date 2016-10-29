@@ -64,7 +64,7 @@ fun demo.main(args: Array<String>) {
 				x = 10.0
 //				y = 10.0
 			}
-			// when colliding the object naming of the given string("rectangle" here), the code in the block will be called.
+			// when colliding the object naming of the given msg("rectangle" here), the code in the block will be called.
 			whenColliding("rectangle") {
 				// stop moving
 				stop()

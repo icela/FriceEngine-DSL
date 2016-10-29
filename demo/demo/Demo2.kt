@@ -22,7 +22,7 @@ fun main(args: Array<String>) = game {
 
 	whenClicked {
 		tell("BlankJ") {
-			stop()
+			stop
 			velocity { y = -300.0 }
 			accelerate { y = 10.0 }
 		}
