@@ -32,6 +32,9 @@ fun FriceBase.你特么给我把标题栏文字改成(string: String) {
 	title = string
 }
 
+fun FriceBase.鎏金哇卡雅酷烈(name: String) = 把它给我带来一顿痛日(name)
+fun FriceBase.把它给我带来一顿痛日(name: String) = kill(name)
+
 fun FriceBase.告诉这个傻逼(name: String, block: FObject.() -> Unit) = tell(name, block)
 
 fun FriceBase.每隔这么多秒一定要好好执行这个代码块喔(x: Int, block: FriceGameTimer.() -> Unit) = every(x, block)

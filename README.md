@@ -11,7 +11,7 @@ If U wonder more about syntax or miscellaneous stuffs, please view [Help doc](./
 It has commented every lines of code with its meaning.
 
 ```kotlin
-fun demo.main(args: Array<String>) {
+fun main(args: Array<String>) {
 	game {
 		bounds(500, 500, 800, 750)
 		showFPS = false

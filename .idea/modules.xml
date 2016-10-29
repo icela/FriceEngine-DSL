@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FriceDSL.iml" filepath="$PROJECT_DIR$/FriceDSL.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LanguageE/LanguageE.iml" filepath="$PROJECT_DIR$/LanguageE/LanguageE.iml" />
     </modules>
   </component>
 </project>
