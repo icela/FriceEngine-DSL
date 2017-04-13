@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="frice-v0.5.2-beta">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../FriceEngine/out/artifacts/frice/engine.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
