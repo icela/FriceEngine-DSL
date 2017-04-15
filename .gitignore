@@ -63,4 +63,5 @@ hs_err_pid*
 .idea/kotlinc.xml
 .idea/misc.xml
 .idea/modules/
+.idea/
 build/
