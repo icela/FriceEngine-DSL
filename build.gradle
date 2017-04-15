@@ -33,6 +33,8 @@ sourceSets {
 	main.java.srcDirs += 'src'
 	test.kotlin.srcDirs += 'test'
 	test.java.srcDirs += 'test'
+	test.kotlin.srcDirs += 'demo'
+	test.java.srcDirs += 'demo'
 }
 
 dependencies {

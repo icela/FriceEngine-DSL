@@ -16,6 +16,7 @@ import org.frice.game.obj.button.SimpleButton
 import org.frice.game.obj.button.SimpleText
 import org.frice.game.obj.sub.ImageObject
 import org.frice.game.obj.sub.ShapeObject
+import org.frice.game.platform.adapter.JvmImage
 import org.frice.game.resource.graphics.ColorResource
 import org.frice.game.resource.image.ImageResource
 import org.frice.game.utils.data.image2File
@@ -360,7 +361,14 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val closeWindow: Unit
 		get () = closeWindow()
 
-	fun cutScreen() = getScreenCut().image.image2File("screenshot.png")
+	fun cutScreen(): Boolean {
+		return getScreenCut()
+				.image
+				.run { this as? JvmImage }
+				?.image
+				?.image2File("screenshot.png")
+				?: false
+	}
 
 	val cutScreen: Boolean
 		get() = cutScreen()

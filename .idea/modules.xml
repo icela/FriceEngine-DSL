@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FriceDSL.iml" filepath="$PROJECT_DIR$/FriceDSL.iml" />
       <module fileurl="file://$PROJECT_DIR$/LanguageE/LanguageE.iml" filepath="$PROJECT_DIR$/LanguageE/LanguageE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsl.iml" filepath="$PROJECT_DIR$/.idea/modules/dsl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsl_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dsl_main.iml" group="dsl" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsl_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dsl_test.iml" group="dsl" />
     </modules>
   </component>
 </project>
