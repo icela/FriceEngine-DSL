@@ -57,18 +57,13 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val ORANGE = ColorResource.ORANGE
 	val MAGENTA = ColorResource.MAGENTA
 
-// waiting for Kotlin to provide this feature
-//	operator fun unknownMethodCall(name: String, block: FriceBase.() -> Unit) {
-//
-//	}
-
-	var onExit: (() -> Unit)? = null
+	var onExit = { }
 
 	var onClick = ArrayList<(AbstractObject) -> Unit>(20)
 
 	var onPress = ArrayList<(AbstractObject) -> Unit>(5)
 
-	var onUpdate: (() -> Unit)? = null
+	var onUpdate = { }
 
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
 
@@ -88,7 +83,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	 */
 	override fun onLastInit() {
 		super.onLastInit()
-		block.invoke(this)
+		block(this)
 	}
 
 	fun requestGC() = System.gc()
@@ -169,17 +164,12 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun tell(name: String, block: FObject.() -> Unit) {
-		if (namedObjects.contains(name))
+		if (name in namedObjects)
 			block.invoke(namedObjects[name] as FObject)
 		else throw DSLErrorException()
 	}
 
-	fun kill(name: String) {
-		if (namedObjects.contains(name))
-			namedObjects[name]!!.die
-		else
-			throw DSLErrorException()
-	}
+	fun kill(name: String) = namedObjects[name]?.die
 
 	fun Long.elapsed() = timer.stopWatch(this)
 	fun Int.elapsed() = timer.stopWatch(this.toLong())
@@ -220,9 +210,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun FObject.whenClicked(block: () -> Unit) {
 		forceRun {
 			onClick.add { e ->
-				if (containsPoint(e.x.toInt(), e.y.toInt())) {
-					block()
-				}
+				if (containsPoint(e.x.toInt(), e.y.toInt())) block()
 			}
 		}
 	}
@@ -230,9 +218,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun FObject.whenPressed(block: () -> Unit) {
 		forceRun {
 			onPress.add { e ->
-				if (containsPoint(e.x.toInt(), e.y.toInt())) {
-					block()
-				}
+				if (containsPoint(e.x.toInt(), e.y.toInt())) block()
 			}
 		}
 	}
@@ -371,12 +357,12 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		get() = cutScreen()
 
 	override fun onExit() {
-		onExit?.invoke()
+		onExit()
 		super.onExit()
 	}
 
 	override fun onRefresh() {
-		onUpdate?.invoke()
+		onUpdate()
 		super.onRefresh()
 	}
 
