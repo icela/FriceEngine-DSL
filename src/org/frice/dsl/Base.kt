@@ -270,49 +270,57 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	fun AbstractObject.include(name: String) {
 		val t = namedTraits[name]
-		x = t?.x ?: x
-		y = t?.y ?: y
+		t?.let {
+			x = t.x ?: x
+			y = t.y ?: y
+		}
 	}
 
 	fun ShapeObject.include(name: String) {
 		forceRun {
 			val t = namedTraits[name]
-			x = t?.x ?: x
-			y = t?.y ?: y
-			res = t?.color ?: res
-			width = t?.width ?: width
-			height = t?.height ?: height
-			targets.addAll((t?.targets ?: emptyList<FTargetForTraits>())
-					.filter { it.string in namedObjects }
-					.map { target ->
-						val str = namedObjects[target.string]!!
-						Pair(str as PhysicalObject, object : FObject.OnCollideEvent {
-							override fun handle() {
-								target.event.invoke()
-							}
+			t?.let {
+				x = t.x ?: x
+				y = t.y ?: y
+				res = t.color ?: res
+				width = t.width ?: width
+				height = t.height ?: height
+				targets.addAll(t.targets
+						.filter { it.string in namedObjects }
+						.map { target ->
+							val str = namedObjects[target.string]!! as PhysicalObject
+							Pair(str, object : FObject.OnCollideEvent {
+								override fun handle() {
+									target.event.invoke()
+								}
+							})
 						})
-					})
-			anims.addAll((t?.anims ?: emptyList<FAnimForTraits>())
-					.map(FAnimForTraits::new))
+				anims.addAll(t.anims
+						.map(FAnimForTraits::new))
+			}
 		}
 	}
 
 	fun SimpleText.include(name: String) {
 		val t = namedTraits[name]
-		x = t?.x ?: x
-		y = t?.y ?: y
-		colorResource = t?.color ?: colorResource
-		text = t?.text ?: text
+		t?.let {
+			x = t.x ?: x
+			y = t.y ?: y
+			colorResource = t.color ?: colorResource
+			text = t.text ?: text
+		}
 	}
 
 	fun SimpleButton.include(name: String) {
 		val t = namedTraits[name]
-		x = t?.x ?: x
-		y = t?.y ?: y
-		colorResource = t?.color ?: colorResource
-		text = t?.text ?: text
-		width = t?.width ?: width
-		height = t?.height ?: height
+		t?.let {
+			x = t.x ?: x
+			y = t.y ?: y
+			colorResource = t.color ?: colorResource
+			text = t.text ?: text
+			width = t.width ?: width
+			height = t.height ?: height
+		}
 	}
 
 	fun traits(name: String, block: Traits.() -> Unit) {
