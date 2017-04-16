@@ -7,7 +7,7 @@ import com.lfk.justweengine.GameTimer
  *
  * @author ice1000
  */
-class FriceGameTimer() : GameTimer() {
+class FriceGameTimer : GameTimer() {
 	fun reset() = resetStop()
 
 	val begin: Double

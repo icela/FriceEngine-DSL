@@ -283,53 +283,50 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 
 	fun AbstractObject.include(name: String) {
-		forceRun {
-			val t = namedTraits[name]!!
-			if (t.x != null) x = t.x!!
-			if (t.y != null) y = t.y!!
-		}
+		val t = namedTraits[name]
+		x = t?.x ?: x
+		y = t?.y ?: y
 	}
 
 	fun ShapeObject.include(name: String) {
 		forceRun {
-			val t = namedTraits[name]!!
-			if (t.x != null) x = t.x!!
-			if (t.y != null) y = t.y!!
-			if (t.color != null) res = t.color!!
-			if (t.width != null) width = t.width!!
-			if (t.height != null) height = t.height!!
-			targets.addAll(t.targets.map { target ->
-				Pair(namedObjects[target.string]!! as PhysicalObject,
-						object : FObject.OnCollideEvent {
+			val t = namedTraits[name]
+			x = t?.x ?: x
+			y = t?.y ?: y
+			res = t?.color ?: res
+			width = t?.width ?: width
+			height = t?.height ?: height
+			targets.addAll((t?.targets ?: emptyList<FTargetForTraits>())
+					.filter { it.string in namedObjects }
+					.map { target ->
+						val str = namedObjects[target.string]!!
+						Pair(str as PhysicalObject, object : FObject.OnCollideEvent {
 							override fun handle() {
 								target.event.invoke()
 							}
 						})
-			})
-			anims.addAll(t.anims.map(FAnimForTraits::new))
+					})
+			anims.addAll((t?.anims ?: emptyList<FAnimForTraits>())
+					.map(FAnimForTraits::new))
 		}
 	}
 
 	fun SimpleText.include(name: String) {
-		forceRun {
-			val t = namedTraits[name]!!
-			if (t.x != null) x = t.x!!
-			if (t.y != null) y = t.y!!
-			if (t.color != null) colorResource = t.color!!
-			if (t.text != null) text = t.text!!
-		}
+		val t = namedTraits[name]
+		x = t?.x ?: x
+		y = t?.y ?: y
+		colorResource = t?.color ?: colorResource
+		text = t?.text ?: text
 	}
 
 	fun SimpleButton.include(name: String) {
-		forceRun {
-			val t = namedTraits[name]!!
-			if (t.x != null) x = t.x!!
-			if (t.y != null) y = t.y!!
-			if (t.color != null) colorResource = t.color!!
-			if (t.text != null) text = t.text!!
-			if (t.width != null) width = t.width!!
-			if (t.height != null) height = t.height!!
-		}
+		val t = namedTraits[name]
+		x = t?.x ?: x
+		y = t?.y ?: y
+		colorResource = t?.color ?: colorResource
+		text = t?.text ?: text
+		width = t?.width ?: width
+		height = t?.height ?: height
 	}
 
 	fun traits(name: String, block: Traits.() -> Unit) {
@@ -354,6 +351,8 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun messageBox(msg: String) = FDialog(this).show(msg)
 
 	fun inputInt(msg: String) = FDialog(this).input(msg).toInt()
+	fun inputDouble(msg: String) = FDialog(this).input(msg).toDouble()
+	fun inputFloat(msg: String) = FDialog(this).input(msg).toFloat()
 
 	fun inputString(msg: String) = FDialog(this).input(msg)
 
@@ -361,14 +360,12 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val closeWindow: Unit
 		get () = closeWindow()
 
-	fun cutScreen(): Boolean {
-		return getScreenCut()
-				.image
-				.run { this as? JvmImage }
-				?.image
-				?.image2File("screenshot.png")
-				?: false
-	}
+	fun cutScreen() = getScreenCut()
+			.image
+			.run { this as? JvmImage }
+			?.image
+			?.image2File("screenshot.png")
+			?: false
 
 	val cutScreen: Boolean
 		get() = cutScreen()
@@ -384,28 +381,22 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	override fun onClick(e: OnClickEvent) {
-		onClick.forEach { o ->
-			o.invoke(mouse)
-		}
+		onClick.forEach { o -> o.invoke(mouse) }
 		super.onClick(e)
 	}
 
 	override fun onMouse(e: OnMouseEvent) {
 		when (e.type()) {
 			OnMouseEvent.MOUSE_PRESSED -> onPress.forEach { o ->
-				forceRun {
-					o.invoke(mouse)
-				}
+				forceRun { o.invoke(mouse) }
 			}
 		}
 		super.onMouse(e)
 	}
 }
 
-class DSLErrorException() : Exception("Error DSL!")
+class DSLErrorException : Exception("Error DSL!")
 
 @JvmName("gameInPackage")
-fun game(block: FriceBase.() -> Unit) {
-	FriceBase(block)
-}
+fun game(block: FriceBase.() -> Unit) = FriceBase(block)
 

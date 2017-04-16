@@ -11,5 +11,6 @@
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1.1" level="project" />
     <orderEntry type="module" module-name="dsl_main" />
+    <orderEntry type="library" name="Gradle: com.github.icela:FriceEngine:v1.0.3" level="project" />
   </component>
 </module>
