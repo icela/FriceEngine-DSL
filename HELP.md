@@ -71,10 +71,7 @@ fun main(args: Array<String>) {
 				// change position
 				x -= 5
 				// move with acceleration again
-				accelerate {
-					x = -2.0
-					y = 10.0
-				}
+				accelerate(-2, 10)
 			}
 		}
 		// add an object displaying image.

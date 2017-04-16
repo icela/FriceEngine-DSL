@@ -73,10 +73,7 @@ fun main(args: Array<String>) {
 				// 直接改变坐标
 				x -= 5
 				// 重新进行加速运动
-				accelerate {
-					x = -2.0
-					y = 10.0
-				}
+				accelerate(-2, 10)
 			}
 		}
 		// 添加一个显示图片的对象。

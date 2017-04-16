@@ -201,11 +201,24 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		anims.add(AccurateMove(a.x, a.y))
 	}
 
+	fun FObject.velocity(x: Int, y: Int) = velocity(x.toDouble(), y.toDouble())
+
+	fun FObject.velocity(x: Double, y: Double) {
+		anims.add(AccurateMove(x, y))
+	}
+
 	fun Traits.velocity(block: AccurateMoveForTraits.() -> Unit) {
 		val a = AccurateMoveForTraits(0.0, 0.0)
 		block(a)
 		anims.add(a)
 	}
+
+	fun Traits.velocity(x: Double, y: Double) {
+		val a = AccurateMoveForTraits(x, y)
+		anims.add(a)
+	}
+
+	fun Traits.velocity(x: Int, y: Int) = velocity(x.toDouble(), y.toDouble())
 
 	fun FObject.whenClicked(block: () -> Unit) {
 		forceRun {
@@ -233,11 +246,23 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		anims.add(AccelerateMove(a.x, a.y))
 	}
 
+	fun FObject.accelerate(x: Double, y: Double) {
+		anims.add(AccelerateMove(x, y))
+	}
+
+	fun FObject.accelerate(x: Int, y: Int) = accelerate(x.toDouble(), y.toDouble())
+
 	fun Traits.accelerate(block: AccelerateMoveForTraits.() -> Unit) {
 		val a = AccelerateMoveForTraits(0.0, 0.0)
 		block(a)
 		anims.add(a)
 	}
+
+	fun Traits.accelerate(x: Double, y: Double) {
+		anims.add(AccelerateMoveForTraits(x, y))
+	}
+
+	fun Traits.accelerate(x: Int, y: Int)  = accelerate(x.toDouble(), y.toDouble())
 
 	fun FObject.force(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)

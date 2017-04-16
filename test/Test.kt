@@ -49,10 +49,7 @@ fun main(args: Array<String>) {
 			whenColliding("rectangle") {
 				stop()
 				x -= 5
-				accelerate {
-					x = -2.0
-					y = 10.0
-				}
+				accelerate(-2, 10)
 			}
 		}
 		image {
