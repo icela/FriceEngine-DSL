@@ -390,12 +390,12 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		get() = cutScreen()
 
 	override fun onExit() {
-		onExit()
+		onExit.invoke()
 		super.onExit()
 	}
 
 	override fun onRefresh() {
-		onUpdate()
+		onUpdate.invoke()
 		super.onRefresh()
 	}
 
