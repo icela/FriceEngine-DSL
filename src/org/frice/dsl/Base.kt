@@ -262,7 +262,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		anims.add(AccelerateMoveForTraits(x, y))
 	}
 
-	fun Traits.accelerate(x: Int, y: Int)  = accelerate(x.toDouble(), y.toDouble())
+	fun Traits.accelerate(x: Int, y: Int) = accelerate(x.toDouble(), y.toDouble())
 
 	fun FObject.force(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
@@ -294,57 +294,51 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 
 	fun AbstractObject.include(name: String) {
-		val t = namedTraits[name]
-		t?.let {
-			x = t.x ?: x
-			y = t.y ?: y
+		namedTraits[name]?.let {
+			x = it.x ?: x
+			y = it.y ?: y
 		}
 	}
 
 	fun ShapeObject.include(name: String) {
 		forceRun {
-			val t = namedTraits[name]
-			t?.let {
-				x = t.x ?: x
-				y = t.y ?: y
-				res = t.color ?: res
-				width = t.width ?: width
-				height = t.height ?: height
-				targets.addAll(t.targets
+			namedTraits[name]?.let {
+				x = it.x ?: x
+				y = it.y ?: y
+				res = it.color ?: res
+				width = it.width ?: width
+				height = it.height ?: height
+				targets.addAll(it.targets
 						.filter { it.string in namedObjects }
 						.map { target ->
 							val str = namedObjects[target.string]!! as PhysicalObject
 							Pair(str, object : FObject.OnCollideEvent {
-								override fun handle() {
-									target.event.invoke()
-								}
+								override fun handle() = target.event.invoke()
 							})
 						})
-				anims.addAll(t.anims
+				anims.addAll(it.anims
 						.map(FAnimForTraits::new))
 			}
 		}
 	}
 
 	fun SimpleText.include(name: String) {
-		val t = namedTraits[name]
-		t?.let {
-			x = t.x ?: x
-			y = t.y ?: y
-			colorResource = t.color ?: colorResource
-			text = t.text ?: text
+		namedTraits[name]?.let {
+			x = it.x ?: x
+			y = it.y ?: y
+			colorResource = it.color ?: colorResource
+			text = it.text ?: text
 		}
 	}
 
 	fun SimpleButton.include(name: String) {
-		val t = namedTraits[name]
-		t?.let {
-			x = t.x ?: x
-			y = t.y ?: y
-			colorResource = t.color ?: colorResource
-			text = t.text ?: text
-			width = t.width ?: width
-			height = t.height ?: height
+		namedTraits[name]?.let {
+			x = it.x ?: x
+			y = it.y ?: y
+			colorResource = it.color ?: colorResource
+			text = it.text ?: text
+			width = it.width ?: width
+			height = it.height ?: height
 		}
 	}
 
