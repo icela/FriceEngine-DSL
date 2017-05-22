@@ -1,5 +1,11 @@
 group 'org.frice'
-version '1.0'
+version '1.1'
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 allprojects {
 	repositories {
@@ -15,14 +21,7 @@ buildscript {
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 	}
-
 }
-
-apply plugin: 'java'
-apply plugin: 'kotlin'
-
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
 
 repositories {
 	mavenCentral()
@@ -37,12 +36,29 @@ sourceSets {
 //	test.java.srcDirs += 'demo'
 }
 
+configurations {
+	artifact
+}
+
 dependencies {
-	compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-	compile group: 'org.jetbrains', name: 'annotations', version: '15.0'
-	compile 'com.github.icela:FriceEngine:v1.0.3'
+	artifact "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+	artifact group: 'org.jetbrains', name: 'annotations', version: '15.0'
+	artifact 'com.github.icela:FriceEngine:v1.0.3'
+
+	configurations.compile.extendsFrom(configurations.artifact)
 
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 	testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+}
+
+
+jar {
+	manifest {
+	}
+	from {
+		configurations
+				.artifact
+				.collect { it.isDirectory() ? it : zipTree(it) }
+	}
 }
 
