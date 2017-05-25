@@ -28,6 +28,7 @@ class Traits(val name: String) {
 interface FAnimForTraits {
 	fun new(): MoveAnim
 }
+
 class AccurateMoveForTraits(var x: Double, var y: Double) : FAnimForTraits {
 	override fun new() = AccurateMove(x, y)
 }
