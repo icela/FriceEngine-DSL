@@ -2,6 +2,8 @@
 
 ![](https://avatars1.githubusercontent.com/u/21008243)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/tne8wv0mofxgg31p/branch/master?svg=true)](https://ci.appveyor.com/project/ice1000/friceengine-dsl/branch/master)
+
 This is a DSL system for FriceEngine.<br/>
 And it's written in **Kotlin**.
 

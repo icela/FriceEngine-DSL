@@ -23,12 +23,17 @@ import org.frice.game.utils.data.image2File
 import org.frice.game.utils.graphics.shape.FOval
 import org.frice.game.utils.graphics.shape.FRectangle
 import org.frice.game.utils.message.FDialog
+import org.frice.game.utils.message.log.FLog
+import org.frice.game.utils.misc.async
 import org.frice.game.utils.misc.forceRun
+import org.frice.game.utils.misc.loop
 import org.frice.game.utils.time.FTimeListener
 import java.awt.Dimension
 import java.awt.Rectangle
 import java.io.File
 import java.util.*
+import javax.swing.UIManager
+import javax.swing.WindowConstants
 
 /**
  * FriceBase framework of frice engine
@@ -128,19 +133,19 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun text(block: SimpleText.() -> Unit) {
-		val st = SimpleText("", 0.0, 0.0)
+		val st = SimpleText(text = "", x = 0.0, y = 0.0)
 		block(st)
 		addObject(st)
 	}
 
 	fun button(block: SimpleButton.() -> Unit) {
-		val sb = SimpleButton("", 0.0, 0.0, 80.0, 30.0)
+		val sb = SimpleButton(text = "", x = 0.0, y = 0.0, width = .0, height = .0)
 		block(sb)
 		addObject(sb)
 	}
 
 	fun imageButton(block: ImageButton.() -> Unit) {
-		val ib = ImageButton(ImageResource.empty(), 0.0, 0.0)
+		val ib = ImageButton(ImageResource.empty(), x = 0.0, y = 0.0)
 		block(ib)
 		addObject(ib)
 	}
@@ -158,7 +163,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun every(millisSeconds: Int, block: FriceGameTimer.() -> Unit) {
-		addTimeListener(FTimeListener(millisSeconds, {
+		addTimeListener(FTimeListener(millisSeconds, timeUp = {
 			block(timer)
 		}))
 	}
@@ -271,9 +276,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun FButton.whenClicked(block: (OnClickEvent) -> Unit) {
-		onClickListener = object : FButton.OnClickListener {
-			override fun onClick(e: OnClickEvent) = block(e)
-		}
+		onClickListener = block
 	}
 
 	fun FObject.whenColliding(
@@ -281,9 +284,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 			block: PhysicalObject.() -> Unit) {
 		val other = namedObjects[otherName]
 		if (other is PhysicalObject)
-			targets.add(Pair(other, object : FObject.OnCollideEvent {
-				override fun handle() = block(this@whenColliding)
-			}))
+			targets.add(other to { block(this@whenColliding) })
 	}
 
 	fun Traits.whenColliding(
@@ -312,9 +313,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 						.filter { it.string in namedObjects }
 						.map { target ->
 							val str = namedObjects[target.string]!! as PhysicalObject
-							Pair(str, object : FObject.OnCollideEvent {
-								override fun handle() = target.event.invoke()
-							})
+							str to { target.event.invoke() }
 						})
 				anims.addAll(it.anims
 						.map(FAnimForTraits::new))
@@ -378,9 +377,8 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 			.run { this as? JvmImage }
 			?.image
 			?.image2File("screenshot.png")
-			?: false
 
-	val cutScreen: Boolean
+	val cutScreen: Unit?
 		get() = cutScreen()
 
 	override fun onExit() {
@@ -399,7 +397,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	override fun onMouse(e: OnMouseEvent) {
-		when (e.type()) {
+		when (e.type) {
 			OnMouseEvent.MOUSE_PRESSED -> onPress.forEach { o ->
 				forceRun { o.invoke(mouse) }
 			}
@@ -411,5 +409,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 class DSLErrorException : Exception("Error DSL!")
 
 @JvmName("gameInPackage")
-fun game(block: FriceBase.() -> Unit) = FriceBase(block)
+fun game(block: FriceBase.() -> Unit) {
+	Game.launch(FriceBase(block))
+}
 
