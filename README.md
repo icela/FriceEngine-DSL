@@ -7,6 +7,8 @@ CI|Status
 Travis CI|[![Build Status](https://travis-ci.org/icela/FriceEngine-DSL.svg?branch=master)](https://travis-ci.org/icela/FriceEngine-DSL)
 AppVeyor|[![Build status](https://ci.appveyor.com/api/projects/status/tne8wv0mofxgg31p/branch/master?svg=true)](https://ci.appveyor.com/project/ice1000/friceengine-dsl/branch/master)
 
+[![](https://jitpack.io/v/icela/FriceEngine-DSL.svg)](https://jitpack.io/#icela/FriceEngine-DSL)
+
 This is a DSL system for FriceEngine.<br/>
 And it's written in **Kotlin**.
 
@@ -83,9 +85,21 @@ And they are all **VALID Kotlin codes**. U can even compile them directly with *
 
 # How to use
 
-### simplest
+You can use Gradle.
 
-Simply using Kotlin compiler **kotlinc** to compile your code, with classpath directing the jar in releases.
+```groovy
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+dependencies {
+	compile 'com.github.icela:FriceEngine-DSL:v0.3'
+}
+```
+
+# The Chinese version
 
 我还做了一个魔改版本，暂时称之为易语言，充满了粗鄙之语。省略import和main：
 
