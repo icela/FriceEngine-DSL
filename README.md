@@ -6,7 +6,7 @@ CI|Status
 :---:|:---|
 Travis CI|[![Build Status](https://travis-ci.org/icela/FriceEngine-DSL.svg?branch=master)](https://travis-ci.org/icela/FriceEngine-DSL)
 AppVeyor|[![Build status](https://ci.appveyor.com/api/projects/status/tne8wv0mofxgg31p/branch/master?svg=true)](https://ci.appveyor.com/project/ice1000/friceengine-dsl/branch/master)
-
+CodeShip|[![Codeship Status for icela/FriceEngine-DSL](https://app.codeship.com/projects/02ce9100-61f9-0135-bc9e-7aecbc4a3d79/status?branch=master)](https://app.codeship.com/projects/239720)
 
 [![](https://jitpack.io/v/icela/FriceEngine-DSL.svg)](https://jitpack.io/#icela/FriceEngine-DSL)
 
