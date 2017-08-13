@@ -7,6 +7,7 @@ dependencies:
   pre:
     - chmod a+x gradlew
   override:
+    - chmod a+x gradlew
     - ./gradlew dependencies
 #
 
