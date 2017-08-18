@@ -1,0 +1,19 @@
+machine:
+  java:
+    version: oraclejdk8
+#
+
+dependencies:
+  pre:
+    - chmod a+x gradlew
+  override:
+    - chmod a+x gradlew
+    - ./gradlew dependencies
+#
+
+
+
+test:
+  override:
+    - ./gradlew test
+#
