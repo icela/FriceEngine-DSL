@@ -24,7 +24,6 @@ import org.frice.game.utils.graphics.shape.FOval
 import org.frice.game.utils.graphics.shape.FRectangle
 import org.frice.game.utils.message.FDialog
 import org.frice.game.utils.message.log.FLog
-import org.frice.game.utils.misc.async
 import org.frice.game.utils.misc.forceRun
 import org.frice.game.utils.misc.loop
 import org.frice.game.utils.time.FTimeListener
