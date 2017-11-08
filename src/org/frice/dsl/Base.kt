@@ -18,12 +18,12 @@ import org.frice.utils.message.FDialog
 import org.frice.utils.misc.forceRun
 import org.frice.utils.shape.FOval
 import org.frice.utils.shape.FRectangle
-import org.frice.utils.time.FTimeListener
 import java.awt.Dimension
 import java.awt.Rectangle
 import java.io.File
 import java.util.*
 import java.util.function.Consumer
+import kotlin.collections.ArrayList
 
 /**
  * FriceBase framework of frice engine
@@ -53,18 +53,13 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val MAGENTA = ColorResource.MAGENTA
 
 	var onExits = { }
-
 	var onClick = ArrayList<Consumer<AbstractObject>>(20)
-
 	var onPress = ArrayList<Consumer<AbstractObject>>(5)
-
 	var onUpdates = { }
-
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
-
 	val namedTraits = LinkedHashMap<String, Traits>(20)
-
 	val clickListeningObjects = LinkedHashMap<String, FObject>(20)
+	val timers = ArrayList<Pair<Int, SideEffect>>(5)
 
 	private val timer = FriceGameTimer()
 
@@ -153,9 +148,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun every(millisSeconds: Int, block: FriceGameTimer.() -> Unit) {
-		addTimeListener(FTimeListener(millisSeconds) {
-			block(timer)
-		})
+		timers.add(millisSeconds to SideEffect { block(timer) })
 	}
 
 	fun tell(name: String, block: FObject.() -> Unit) =
