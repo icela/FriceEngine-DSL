@@ -277,7 +277,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	fun Traits.whenColliding(
 			otherName: String,
-			block: () -> Unit) {
+			block: SideEffect) {
 		targets += FTargetForTraits(otherName, block)
 	}
 
@@ -345,8 +345,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		}
 	}
 
-	val AbstractObject.die: Unit
-		get() = die()
+	val AbstractObject.die get() = die()
 
 	fun messageBox(msg: String) = FDialog(this).show(msg)
 
@@ -361,12 +360,11 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	fun cutScreen() = getScreenCut()
 			.image
-			.run { this as? JvmImage }
+			.let { it as? JvmImage }
 			?.image
 			?.image2File("screenshot.png")
 
-	val cutScreen: Unit?
-		get() = cutScreen()
+	val cutScreen get() = cutScreen()
 
 	override fun onExit() {
 		onExits()

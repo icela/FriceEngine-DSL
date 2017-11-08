@@ -1,9 +1,8 @@
 package org.frice.dsl.extension
 
-import org.frice.game.anim.move.AccelerateMove
-import org.frice.game.anim.move.AccurateMove
-import org.frice.game.anim.move.MoveAnim
-import org.frice.game.resource.graphics.ColorResource
+import org.frice.anim.move.*
+import org.frice.obj.SideEffect
+import org.frice.resource.graphics.ColorResource
 import java.util.*
 
 /**
@@ -37,4 +36,4 @@ class AccelerateMoveForTraits(var x: Double, var y: Double): FAnimForTraits {
 	override fun new() = AccelerateMove(x, y)
 }
 
-class FTargetForTraits(var string: String, var event: () -> Unit)
+class FTargetForTraits(var string: String, var event: SideEffect)

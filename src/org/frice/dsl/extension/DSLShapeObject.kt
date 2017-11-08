@@ -11,7 +11,7 @@ import org.frice.utils.shape.FShapeInt
  * @author ice1000
  */
 class DSLShapeObject(res: ColorResource, shape: FShapeInt) : ShapeObject(res, shape) {
-	var color: ColorResource
+	var color
 		get() = res
 		set(value) {
 			res = value
