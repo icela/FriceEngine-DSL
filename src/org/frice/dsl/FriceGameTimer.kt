@@ -9,7 +9,5 @@ import com.lfk.justweengine.GameTimer
  */
 class FriceGameTimer : GameTimer() {
 	fun reset() = resetStop()
-
-	val begin: Double
-		get() = e_start
+	val begin get() = e_start
 }

@@ -5,6 +5,7 @@ import org.frice.anim.move.*
 import org.frice.dsl.extension.*
 import org.frice.event.OnClickEvent
 import org.frice.event.OnMouseEvent
+import org.frice.launch
 import org.frice.obj.*
 import org.frice.obj.button.*
 import org.frice.obj.sub.ImageObject
@@ -51,13 +52,13 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val ORANGE = ColorResource.ORANGE
 	val MAGENTA = ColorResource.MAGENTA
 
-	var onExit = { }
+	var onExits = { }
 
 	var onClick = ArrayList<Consumer<AbstractObject>>(20)
 
 	var onPress = ArrayList<Consumer<AbstractObject>>(5)
 
-	var onUpdate = { }
+	var onUpdates = { }
 
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
 
@@ -140,28 +141,26 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun whenExit(block: () -> Unit) {
-		onExit = block
+		onExits = block
 	}
 
 	fun whenUpdate(block: () -> Unit) {
-		onUpdate = block
+		onUpdates = block
 	}
 
 	fun whenClicked(block: AbstractObject.() -> Unit) {
-		onClick.add(block)
+		onClick.add(Consumer(block))
 	}
 
 	fun every(millisSeconds: Int, block: FriceGameTimer.() -> Unit) {
-		addTimeListener(FTimeListener(millisSeconds, timeUp = {
+		addTimeListener(FTimeListener(millisSeconds) {
 			block(timer)
-		}))
+		})
 	}
 
-	fun tell(name: String, block: FObject.() -> Unit) {
-		if (name in namedObjects)
-			block.invoke(namedObjects[name] as FObject)
-		else throw DSLErrorException()
-	}
+	fun tell(name: String, block: FObject.() -> Unit) =
+			if (name in namedObjects) block(namedObjects[name] as FObject)
+			else throw DSLErrorException()
 
 	fun kill(name: String) = namedObjects[name]?.die
 
@@ -171,10 +170,10 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	infix fun Long.from(begin: Int) = this - begin
 	infix fun Int.from(begin: Int) = this - begin
 	infix fun Int.from(begin: Long) = this - begin
-	infix fun Int.to(int: Int) = rangeTo(int)
-	infix fun Int.to(int: Long) = rangeTo(int)
-	infix fun Long.to(long: Long) = rangeTo(long)
-	infix fun Long.to(long: Int) = rangeTo(long)
+	infix fun Int.til(int: Int) = rangeTo(int)
+	infix fun Int.til(int: Long) = rangeTo(int)
+	infix fun Long.til(long: Long) = rangeTo(long)
+	infix fun Long.til(long: Int) = rangeTo(long)
 
 	infix fun Int.randomTo(int: Int) = (random.nextInt(int - this) + this).toDouble()
 	infix fun Int.randomDownTo(int: Int) = (random.nextInt(this - int) + int).toDouble()
@@ -192,41 +191,41 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun FObject.velocity(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
 		block(a)
-		anims.add(AccurateMove(a.x, a.y))
+		anims += AccurateMove(a.x, a.y)
 	}
 
 	fun FObject.velocity(x: Int, y: Int) = velocity(x.toDouble(), y.toDouble())
 
 	fun FObject.velocity(x: Double, y: Double) {
-		anims.add(AccurateMove(x, y))
+		anims += AccurateMove(x, y)
 	}
 
 	fun Traits.velocity(block: AccurateMoveForTraits.() -> Unit) {
 		val a = AccurateMoveForTraits(0.0, 0.0)
 		block(a)
-		anims.add(a)
+		anims += a
 	}
 
 	fun Traits.velocity(x: Double, y: Double) {
 		val a = AccurateMoveForTraits(x, y)
-		anims.add(a)
+		anims += a
 	}
 
 	fun Traits.velocity(x: Int, y: Int) = velocity(x.toDouble(), y.toDouble())
 
 	fun FObject.whenClicked(block: () -> Unit) {
 		forceRun {
-			onClick.add { e ->
+			onClick.add(element = Consumer { e ->
 				if (containsPoint(e.x.toInt(), e.y.toInt())) block()
-			}
+			})
 		}
 	}
 
 	fun FObject.whenPressed(block: () -> Unit) {
 		forceRun {
-			onPress.add { e ->
+			onPress.add(element = Consumer { e ->
 				if (containsPoint(e.x.toInt(), e.y.toInt())) block()
-			}
+			})
 		}
 	}
 
@@ -237,11 +236,11 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun FObject.accelerate(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
 		block(a)
-		anims.add(AccelerateMove(a.x, a.y))
+		anims += AccelerateMove(a.x, a.y)
 	}
 
 	fun FObject.accelerate(x: Double, y: Double) {
-		anims.add(AccelerateMove(x, y))
+		anims += AccelerateMove(x, y)
 	}
 
 	fun FObject.accelerate(x: Int, y: Int) = accelerate(x.toDouble(), y.toDouble())
@@ -249,11 +248,11 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun Traits.accelerate(block: AccelerateMoveForTraits.() -> Unit) {
 		val a = AccelerateMoveForTraits(0.0, 0.0)
 		block(a)
-		anims.add(a)
+		anims += a
 	}
 
 	fun Traits.accelerate(x: Double, y: Double) {
-		anims.add(AccelerateMoveForTraits(x, y))
+		anims += AccelerateMoveForTraits(x, y)
 	}
 
 	fun Traits.accelerate(x: Int, y: Int) = accelerate(x.toDouble(), y.toDouble())
@@ -273,13 +272,13 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 			block: PhysicalObject.() -> Unit) {
 		val other = namedObjects[otherName]
 		if (other is PhysicalObject)
-			targets.add(other to { block(this@whenColliding) })
+			targets += other to SideEffect { block(this@whenColliding) }
 	}
 
 	fun Traits.whenColliding(
 			otherName: String,
 			block: () -> Unit) {
-		targets.add(FTargetForTraits(otherName, block))
+		targets += FTargetForTraits(otherName, block)
 	}
 
 
@@ -298,12 +297,12 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 				res = it.color ?: res
 				width = it.width ?: width
 				height = it.height ?: height
-				targets.addAll(it.targets
+				targets += it.targets
 						.filter { it.string in namedObjects }
 						.map { target ->
 							val str = namedObjects[target.string]!! as PhysicalObject
-							str to { target.event.invoke() }
-						})
+							str to SideEffect { (target.event)() }
+						}
 				anims.addAll(it.anims
 						.map(FAnimForTraits::new))
 			}
@@ -358,8 +357,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun inputString(msg: String) = FDialog(this).input(msg)
 
 	fun closeWindow() = System.exit(0)
-	val closeWindow: Unit
-		get () = closeWindow()
+	val closeWindow get () = closeWindow()
 
 	fun cutScreen() = getScreenCut()
 			.image
@@ -371,24 +369,24 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		get() = cutScreen()
 
 	override fun onExit() {
-		onExit.invoke()
+		onExits()
 		super.onExit()
 	}
 
 	override fun onRefresh() {
-		onUpdate.invoke()
+		onUpdates()
 		super.onRefresh()
 	}
 
 	override fun onClick(e: OnClickEvent) {
-		onClick.forEach { o -> o.invoke(mouse) }
+		onClick.forEach { o -> o.accept(mouse) }
 		super.onClick(e)
 	}
 
 	override fun onMouse(e: OnMouseEvent) {
 		when (e.type) {
 			OnMouseEvent.MOUSE_PRESSED -> onPress.forEach { o ->
-				forceRun { o.invoke(mouse) }
+				forceRun { o.accept(mouse) }
 			}
 		}
 		super.onMouse(e)
@@ -398,7 +396,5 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 class DSLErrorException : Exception("Error DSL!")
 
 @JvmName("gameInPackage")
-fun game(block: FriceBase.() -> Unit) {
-	Game.launch(FriceBase(block))
-}
+fun game(block: FriceBase.() -> Unit) = launch(FriceBase(block))
 
