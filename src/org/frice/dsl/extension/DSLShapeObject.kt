@@ -1,8 +1,8 @@
 package org.frice.dsl.extension
 
-import org.frice.game.obj.sub.ShapeObject
-import org.frice.game.resource.graphics.ColorResource
-import org.frice.game.utils.graphics.shape.FShapeInt
+import org.frice.obj.sub.ShapeObject
+import org.frice.resource.graphics.ColorResource
+import org.frice.utils.shape.FShapeInt
 
 /**
  * Provide sth that is needed by DSL

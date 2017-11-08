@@ -1,38 +1,28 @@
 package org.frice.dsl
 
+import org.frice.Game
+import org.frice.anim.move.*
 import org.frice.dsl.extension.*
-import org.frice.game.Game
-import org.frice.game.anim.move.AccelerateMove
-import org.frice.game.anim.move.AccurateMove
-import org.frice.game.anim.move.DoublePair
-import org.frice.game.event.OnClickEvent
-import org.frice.game.event.OnMouseEvent
-import org.frice.game.obj.AbstractObject
-import org.frice.game.obj.FObject
-import org.frice.game.obj.PhysicalObject
-import org.frice.game.obj.button.FButton
-import org.frice.game.obj.button.ImageButton
-import org.frice.game.obj.button.SimpleButton
-import org.frice.game.obj.button.SimpleText
-import org.frice.game.obj.sub.ImageObject
-import org.frice.game.obj.sub.ShapeObject
-import org.frice.game.platform.adapter.JvmImage
-import org.frice.game.resource.graphics.ColorResource
-import org.frice.game.resource.image.ImageResource
-import org.frice.game.utils.data.image2File
-import org.frice.game.utils.graphics.shape.FOval
-import org.frice.game.utils.graphics.shape.FRectangle
-import org.frice.game.utils.message.FDialog
-import org.frice.game.utils.message.FLog
-import org.frice.game.utils.misc.forceRun
-import org.frice.game.utils.misc.loop
-import org.frice.game.utils.time.FTimeListener
+import org.frice.event.OnClickEvent
+import org.frice.event.OnMouseEvent
+import org.frice.obj.*
+import org.frice.obj.button.*
+import org.frice.obj.sub.ImageObject
+import org.frice.obj.sub.ShapeObject
+import org.frice.platform.adapter.JvmImage
+import org.frice.resource.graphics.ColorResource
+import org.frice.resource.image.ImageResource
+import org.frice.utils.data.image2File
+import org.frice.utils.message.FDialog
+import org.frice.utils.misc.forceRun
+import org.frice.utils.shape.FOval
+import org.frice.utils.shape.FRectangle
+import org.frice.utils.time.FTimeListener
 import java.awt.Dimension
 import java.awt.Rectangle
 import java.io.File
 import java.util.*
-import javax.swing.UIManager
-import javax.swing.WindowConstants
+import java.util.function.Consumer
 
 /**
  * FriceBase framework of frice engine
@@ -63,9 +53,9 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	var onExit = { }
 
-	var onClick = ArrayList<(AbstractObject) -> Unit>(20)
+	var onClick = ArrayList<Consumer<AbstractObject>>(20)
 
-	var onPress = ArrayList<(AbstractObject) -> Unit>(5)
+	var onPress = ArrayList<Consumer<AbstractObject>>(5)
 
 	var onUpdate = { }
 
@@ -75,9 +65,9 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	val clickListeningObjects = LinkedHashMap<String, FObject>(20)
 
-	val timer = FriceGameTimer()
+	private val timer = FriceGameTimer()
 
-	val logFile = "frice.log"
+	var logFile = "frice.log"
 
 	val elapsed: Double
 		get() = timer.elapsed
@@ -274,7 +264,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		addForce(a.x, a.y)
 	}
 
-	fun FButton.whenClicked(block: (OnClickEvent) -> Unit) {
+	fun FButton.whenClicked(block: Consumer<OnClickEvent>) {
 		onClickListener = block
 	}
 
