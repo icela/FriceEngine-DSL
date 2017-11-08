@@ -1,11 +1,11 @@
 package org.frice.dsl
 
 import org.frice.dsl.extension.DSLShapeObject
-import org.frice.game.anim.move.AccurateMove
-import org.frice.game.anim.move.DoublePair
-import org.frice.game.obj.AbstractObject
-import org.frice.game.obj.FObject
-import org.frice.game.obj.button.SimpleButton
+import org.frice.anim.move.AccurateMove
+import org.frice.anim.move.DoublePair
+import org.frice.obj.AbstractObject
+import org.frice.obj.FObject
+import org.frice.obj.button.SimpleButton
 
 /**
  * Created by ice1000 on 2016/10/29.
