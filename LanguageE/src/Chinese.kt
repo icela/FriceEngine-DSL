@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName", "unused")
+
 package org.frice.dsl
 
 import org.frice.dsl.extension.DSLShapeObject
