@@ -1,21 +1,22 @@
+@file:Suppress("unused")
+
 package org.frice.dsl
 
 import org.frice.Game
 import org.frice.anim.move.*
 import org.frice.dsl.extension.*
-import org.frice.event.OnClickEvent
+import org.frice.event.MOUSE_PRESSED
 import org.frice.event.OnMouseEvent
 import org.frice.launch
 import org.frice.obj.*
 import org.frice.obj.button.*
 import org.frice.obj.sub.ImageObject
 import org.frice.obj.sub.ShapeObject
-import org.frice.platform.adapter.JvmImage
 import org.frice.resource.graphics.ColorResource
 import org.frice.resource.image.ImageResource
-import org.frice.utils.data.image2File
+import org.frice.utils.forceRun
+import org.frice.utils.image2File
 import org.frice.utils.message.FDialog
-import org.frice.utils.misc.forceRun
 import org.frice.utils.shape.FOval
 import org.frice.utils.shape.FRectangle
 import java.awt.Dimension
@@ -31,6 +32,7 @@ import kotlin.collections.ArrayList
  *
  * @author ice1000
  */
+@Suppress("MemberVisibilityCanPrivate", "PropertyName")
 open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	companion object {
@@ -168,8 +170,8 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	infix fun Long.til(long: Long) = rangeTo(long)
 	infix fun Long.til(long: Int) = rangeTo(long)
 
-	infix fun Int.randomTo(int: Int) = (random.nextInt(int - this) + this).toDouble()
-	infix fun Int.randomDownTo(int: Int) = (random.nextInt(this - int) + int).toDouble()
+	infix fun Int.randomTo(int: Int) = (Math.random() * (int - this) + this)
+	infix fun Int.randomDownTo(int: Int) = (Math.random() * (this - int) + int)
 
 	fun AbstractObject.name(s: String) = namedObjects.put(s, this)
 
@@ -256,8 +258,8 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		addForce(a.x, a.y)
 	}
 
-	fun FButton.whenClicked(block: Consumer<OnClickEvent>) {
-		onClickListener = block
+	fun FButton.whenClicked(block: Consumer<OnMouseEvent>) {
+		onMouseListener = block
 	}
 
 	fun FObject.whenColliding(
@@ -351,11 +353,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun closeWindow() = System.exit(0)
 	val closeWindow get () = closeWindow()
 
-	fun cutScreen() = getScreenCut()
-			.image
-			.let { it as? JvmImage }
-			?.image
-			?.image2File("screenshot.png")
+	fun cutScreen() = screenCut.image.image2File("screenshot.png")
 
 	val cutScreen get() = cutScreen()
 
@@ -369,16 +367,9 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		super.onRefresh()
 	}
 
-	override fun onClick(e: OnClickEvent) {
-		onClick.forEach { o -> o.accept(mouse) }
-		super.onClick(e)
-	}
-
 	override fun onMouse(e: OnMouseEvent) {
 		when (e.type) {
-			OnMouseEvent.MOUSE_PRESSED -> onPress.forEach { o ->
-				forceRun { o.accept(mouse) }
-			}
+			MOUSE_PRESSED -> onPress.forEach { o -> forceRun { o.accept(mouse) } }
 		}
 		super.onMouse(e)
 	}
