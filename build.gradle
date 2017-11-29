@@ -14,7 +14,7 @@ allprojects {
 }
 
 buildscript {
-	ext.kotlin_version = '1.1.60'
+	ext.kotlin_version = '1.2.0'
 	repositories {
 		mavenCentral()
 	}
@@ -43,7 +43,7 @@ configurations {
 dependencies {
 	artifact "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 	artifact group: 'org.jetbrains', name: 'annotations', version: '15.0'
-	artifact 'com.github.icela:FriceEngine:v1.6.3'
+	artifact 'com.github.icela:FriceEngine:v1.6.4'
 
 	configurations.compile.extendsFrom(configurations.artifact)
 
@@ -51,14 +51,7 @@ dependencies {
 	testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
 
-
 jar {
-	manifest {
-	}
-	from {
-		configurations
-				.artifact
-				.collect { it.isDirectory() ? it : zipTree(it) }
-	}
+	from { configurations.artifact.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
