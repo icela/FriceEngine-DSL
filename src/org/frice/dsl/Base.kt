@@ -16,7 +16,6 @@ import org.frice.resource.graphics.ColorResource
 import org.frice.resource.image.ImageResource
 import org.frice.utils.forceRun
 import org.frice.utils.image2File
-import org.frice.utils.message.FDialog
 import org.frice.utils.shape.FOval
 import org.frice.utils.shape.FRectangle
 import java.awt.Dimension
@@ -342,13 +341,11 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	val AbstractObject.die get() = die()
 
-	fun messageBox(msg: String) = FDialog(this).show(msg)
+	fun inputInt(msg: String, title: String = "Input an integer") = dialogInput(msg, title).toInt()
+	fun inputDouble(msg: String, title: String = "Input a double") = dialogInput(msg, title).toDouble()
+	fun inputFloat(msg: String, title: String = "Input a float") = dialogInput(msg, title).toFloat()
 
-	fun inputInt(msg: String) = FDialog(this).input(msg).toInt()
-	fun inputDouble(msg: String) = FDialog(this).input(msg).toDouble()
-	fun inputFloat(msg: String) = FDialog(this).input(msg).toFloat()
-
-	fun inputString(msg: String) = FDialog(this).input(msg)
+	fun inputString(msg: String, title: String = "Input text") = dialogInput(msg, title)
 
 	fun closeWindow() = System.exit(0)
 	val closeWindow get () = closeWindow()
