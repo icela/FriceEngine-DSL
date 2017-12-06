@@ -97,7 +97,7 @@ allprojects {
 	}
 }
 dependencies {
-	compile 'com.github.icela:FriceEngine-DSL:v0.3'
+	compile 'com.github.icela:FriceEngine-DSL:v1.2.1'
 }
 ```
 

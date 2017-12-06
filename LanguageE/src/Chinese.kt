@@ -22,7 +22,7 @@ fun FObject.死吧死吧死吧下地狱吧() {
 	died = true
 }
 
-fun FriceBase.弹出一个傻逼一样的提示窗口然后再傻逼地显示(msg: String) = messageBox(msg)
+fun FriceBase.弹出一个傻逼一样的提示窗口然后再傻逼地显示(msg: String) = dialogShow(msg)
 
 fun FriceBase.狗日的把这个傻逼的窗口给关了() = closeWindow()
 val FriceBase.狗日的把这个傻逼的窗口给关了: Unit
