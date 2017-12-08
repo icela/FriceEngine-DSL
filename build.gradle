@@ -43,7 +43,7 @@ configurations {
 dependencies {
 	artifact "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 	artifact group: 'org.jetbrains', name: 'annotations', version: '15.0'
-	artifact 'com.github.icela:FriceEngine:v1.7.1'
+	artifact 'com.github.icela:FriceEngine:v1.7.5'
 
 	configurations.compile.extendsFrom(configurations.artifact)
 

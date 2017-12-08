@@ -57,6 +57,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	var onClick = ArrayList<Consumer<AbstractObject>>(20)
 	var onPress = ArrayList<Consumer<AbstractObject>>(5)
 	var onUpdates = { }
+	val collisions = ArrayList<Triple<Collidable, Collidable, SideEffect>>()
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
 	val namedTraits = LinkedHashMap<String, Traits>(20)
 	val clickListeningObjects = LinkedHashMap<String, FObject>(20)
@@ -251,22 +252,16 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	fun Traits.accelerate(x: Int, y: Int) = accelerate(x.toDouble(), y.toDouble())
 
-	fun FObject.force(block: DoublePair.() -> Unit) {
-		val a = DoublePair(0.0, 0.0)
-		block(a)
-		addForce(a.x, a.y)
-	}
-
 	fun FButton.whenClicked(block: Consumer<OnMouseEvent>) {
 		onMouseListener = block
 	}
 
-	fun FObject.whenColliding(
+	fun PhysicalObject.whenColliding(
 			otherName: String,
 			block: PhysicalObject.() -> Unit) {
 		val other = namedObjects[otherName]
 		if (other is PhysicalObject)
-			targets += other to SideEffect { block(this@whenColliding) }
+			collisions += Triple(this, other, SideEffect { block(this@whenColliding) })
 	}
 
 	fun Traits.whenColliding(
@@ -274,7 +269,6 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 			block: SideEffect) {
 		targets += FTargetForTraits(otherName, block)
 	}
-
 
 	fun AbstractObject.include(name: String) {
 		namedTraits[name]?.let {
@@ -291,14 +285,13 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 				res = it.color ?: res
 				width = it.width ?: width
 				height = it.height ?: height
-				targets += it.targets
+				collisions += it.targets
 						.filter { it.string in namedObjects }
 						.map { target ->
 							val str = namedObjects[target.string]!! as PhysicalObject
-							str to SideEffect { (target.event)() }
+							Triple(this, str, SideEffect { (target.event)() })
 						}
-				anims.addAll(it.anims
-						.map(FAnimForTraits::new))
+				anims.addAll(it.anims.map(FAnimForTraits::new))
 			}
 		}
 	}
@@ -307,7 +300,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		namedTraits[name]?.let {
 			x = it.x ?: x
 			y = it.y ?: y
-			colorResource = it.color ?: colorResource
+			color = it.color ?: color
 			text = it.text ?: text
 		}
 	}
