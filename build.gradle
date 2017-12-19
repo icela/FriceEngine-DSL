@@ -14,7 +14,8 @@ allprojects {
 }
 
 buildscript {
-	ext.kotlin_version = '1.2.0'
+	ext.kotlin_version = '1.2.10'
+	ext.frice_version = 'v1.7.11'
 	repositories {
 		mavenCentral()
 	}
@@ -43,7 +44,7 @@ configurations {
 dependencies {
 	artifact "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 	artifact group: 'org.jetbrains', name: 'annotations', version: '15.0'
-	artifact 'com.github.icela:FriceEngine:v1.7.5'
+	artifact "com.github.icela:FriceEngine:$frice_version"
 
 	configurations.compile.extendsFrom(configurations.artifact)
 

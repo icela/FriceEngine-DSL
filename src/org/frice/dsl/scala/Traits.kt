@@ -21,7 +21,7 @@ class Traits(val name: String) {
 	var text: String? = null
 
 	val targets = LinkedList<FTargetForTraits>()
-	val anims = LinkedList <FAnimForTraits>()
+	val anims = LinkedList<FAnimForTraits>()
 }
 
 interface FAnimForTraits {
@@ -32,7 +32,7 @@ class AccurateMoveForTraits(var x: Double, var y: Double) : FAnimForTraits {
 	override fun new() = AccurateMove(x, y)
 }
 
-class AccelerateMoveForTraits(var x: Double, var y: Double): FAnimForTraits {
+class AccelerateMoveForTraits(var x: Double, var y: Double) : FAnimForTraits {
 	override fun new() = AccelerateMove(x, y)
 }
 

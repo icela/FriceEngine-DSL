@@ -1,6 +1,8 @@
 package org.frice.dsl.extension
 
-import org.frice.anim.move.*
+import org.frice.anim.FAnim
+import org.frice.anim.move.AccelerateMove
+import org.frice.anim.move.AccurateMove
 import org.frice.obj.SideEffect
 import org.frice.resource.graphics.ColorResource
 import java.util.*
@@ -25,8 +27,10 @@ class Traits(val name: String) {
 }
 
 interface FAnimForTraits {
-	fun new(): MoveAnim
+	fun new(): FAnim
 }
+
+class DoublePair(val x: Double, val y: Double)
 
 class AccurateMoveForTraits(var x: Double, var y: Double) : FAnimForTraits {
 	override fun new() = AccurateMove(x, y)

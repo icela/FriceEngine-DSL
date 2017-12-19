@@ -309,7 +309,6 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		namedTraits[name]?.let {
 			x = it.x ?: x
 			y = it.y ?: y
-			colorResource = it.color ?: colorResource
 			text = it.text ?: text
 			width = it.width ?: width
 			height = it.height ?: height
