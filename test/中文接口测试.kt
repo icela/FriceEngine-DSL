@@ -28,12 +28,13 @@ fun main(args: Array<String>) {
 			log("1 second has past.")
 		}
 
-		rectangle {
+		长方形 {
 			name("rectangle")
 			x = 100.0
 			y = 100.0
 			width = 100.0
 		}
+		/* TODO: 编译报错: Val cannot be reassigned
 		oval {
 			x = 0.0
 			y = 85.0
@@ -46,7 +47,8 @@ fun main(args: Array<String>) {
 				x -= 5
 				accelerate(-2, 10)
 			}
-		}
+		}*/
+		/* TODO
 		image {
 			file("C:/frice.png")
 			x = 200.0
@@ -55,6 +57,6 @@ fun main(args: Array<String>) {
 				x = -5.5
 //				y = -5.5
 			}
-		}
+		}*/
 	}
 }
