@@ -6,8 +6,7 @@ import org.frice.Game
 import org.frice.anim.move.AccelerateMove
 import org.frice.anim.move.AccurateMove
 import org.frice.dsl.extension.*
-import org.frice.event.MOUSE_PRESSED
-import org.frice.event.OnMouseEvent
+import org.frice.event.*
 import org.frice.launch
 import org.frice.obj.*
 import org.frice.obj.button.*
@@ -366,6 +365,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	override fun onMouse(e: OnMouseEvent) {
 		when (e.type) {
 			MOUSE_PRESSED -> onPress.forEach { o -> forceRun { o.accept(mouse) } }
+			MOUSE_CLICKED -> onClick.forEach { o -> forceRun { o.accept(mouse) } }
 		}
 		super.onMouse(e)
 	}
