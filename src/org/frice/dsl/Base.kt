@@ -106,6 +106,10 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		addObject(so)
 	}
 
+	fun 长方形(block: DSLShapeObject.() -> Unit) {
+		rectangle(block)
+	}
+
 	fun oval(block: DSLShapeObject.() -> Unit): DSLShapeObject {
 		val so = DSLShapeObject(ColorResource.西木野真姬, FOval(25.0, 25.0))
 		block(so)
