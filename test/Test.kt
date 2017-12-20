@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
 		}
 
 		rectangle {
-			name("rectangle")
+			name("233")
 			x = 100.0
 			y = 100.0
 			width = 100.0
@@ -46,14 +46,14 @@ fun main(args: Array<String>) {
 				x = 10.0
 //				y = 10.0
 			}
-			whenColliding("rectangle") {
+			whenColliding("233") {
 				stop()
 				x -= 5
 				accelerate(-2, 10)
 			}
 		}
 		image {
-			file("C:/frice.png")
+			url("https://avatars3.githubusercontent.com/u/16398479")
 			x = 200.0
 			y = 300.0
 			velocity {

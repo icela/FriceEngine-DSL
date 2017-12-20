@@ -3,7 +3,8 @@
 package org.frice.dsl
 
 import org.frice.Game
-import org.frice.anim.move.*
+import org.frice.anim.move.AccelerateMove
+import org.frice.anim.move.AccurateMove
 import org.frice.dsl.extension.*
 import org.frice.event.MOUSE_PRESSED
 import org.frice.event.OnMouseEvent
@@ -356,6 +357,9 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	override fun onRefresh() {
 		onUpdates()
+		collisions.forEach { (a, b, event) ->
+			if (a.collides(b)) event()
+		}
 		super.onRefresh()
 	}
 
