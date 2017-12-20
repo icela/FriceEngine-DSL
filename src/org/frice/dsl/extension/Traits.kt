@@ -30,7 +30,7 @@ interface FAnimForTraits {
 	fun new(): FAnim
 }
 
-class DoublePair(val x: Double, val y: Double)
+class DoublePair(var x: Double, var y: Double)
 
 class AccurateMoveForTraits(var x: Double, var y: Double) : FAnimForTraits {
 	override fun new() = AccurateMove(x, y)
