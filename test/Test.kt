@@ -1,5 +1,4 @@
 import org.frice.dsl.game
-import org.frice.obj.SideEffect
 
 /**
  * Created by ice1000 on 2016/9/28.
@@ -55,9 +54,9 @@ fun main(args: Array<String>) {
 					y = 0.0
 				}
 				accelerate(-0, 50)
-				runLater(1000L, SideEffect {
+				runLater(1000L) {
 					dialogShow("距离碰撞发生，已经过去一秒。")
-				})
+				}
 			}
 		}
 		image {
