@@ -16,5 +16,31 @@ class DSLShapeObject(res: ColorResource, shape: FShapeInt) : ShapeObject(res, sh
 		set(value) {
 			res = value
 		}
+
+	var 左上角x
+		get() = x
+		set(值) {
+			x = 值
+		}
+	var 左上角y
+		get() = y
+		set(值) {
+			y = 值
+		}
+	var 颜色
+		get() = color
+		set(值) {
+			color = 值
+		}
+	var 宽
+		get() = width
+		set(值) {
+			width = 值
+		}
+	var 高
+		get() = height
+		set(值) {
+			height = 值
+		}
 }
 

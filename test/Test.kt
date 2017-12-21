@@ -35,7 +35,7 @@ fun main(args: Array<String>) {
 
 		rectangle {
 			name("233")
-			x = 100.0
+			x = 300.0
 			y = 100.0
 			width = 100.0
 		}
@@ -43,13 +43,17 @@ fun main(args: Array<String>) {
 			x = 0.0
 			y = 85.0
 			accelerate {
-				x = 10.0
+				x = 20.0
 //				y = 10.0
 			}
 			whenColliding("233") {
 				stop()
-				x -= 5
-				accelerate(-2, 10)
+				x -= 2
+				velocity {
+					x = -50.0
+					y = 0.0
+				}
+				accelerate(-0, 50)
 			}
 		}
 		image {
