@@ -343,7 +343,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 			namedTraits[name]?.let {
 				x = it.x ?: x
 				y = it.y ?: y
-				res = it.color ?: res
+				color = it.color ?: color
 				width = it.width ?: width
 				height = it.height ?: height
 				collisions += it.targets
