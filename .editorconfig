@@ -1,0 +1,14 @@
+[*]
+charset=utf-8
+end_of_line=lf
+insert_final_newline=false
+indent_style=tab
+tab_width=2
+
+[*.css]
+indent_style=space
+indent_size=4
+
+[{messages.*,messages,org.codehaus.groovy.runtime.ExtensionModule,*.properties}]
+indent_style=space
+indent_size=4
