@@ -174,6 +174,9 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		onUpdates = block
 	}
 
+	fun runLater(millisFromNow: Long, block: () -> Unit) = runLater(millisFromNow, SideEffect(block))
+	fun runFromStart(millisFromNow: Long, block: () -> Unit) = runFromStart(millisFromNow, SideEffect(block))
+
 	fun 当更新时(块: () -> Unit) = whenUpdate(块)
 
 	fun whenClicked(block: AbstractObject.() -> Unit) {
