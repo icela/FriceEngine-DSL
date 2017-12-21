@@ -1,59 +1,58 @@
-import org.frice.dsl.game
+import org.frice.dsl.游戏
 
 fun main(args: Array<String>) {
-	game {
-		bounds(500, 500, 800, 750)
-		showFPS = false
+	val 障碍物名 = "南墙"
+	游戏 {
+		边界(500, 500, 800, 750)
+		显示帧率 = false
 
-		whenExit {
-			closeWindow()
+		当退出时 {
+			关闭窗口()
 		}
 
-		whenUpdate {
-			if (800.elapsed()) {
-				rectangle {
-					x = elapsed / 10.0
-					y = elapsed / 10.0
-					color = PINK
+		当更新时 {
+			if (800.毫秒后()) {
+				长方形 {
+					左上角x = 经过时间 / 10.0
+					左上角y = 经过时间 / 10.0
+					颜色 = 粉
 				}
 			}
 		}
 
-		every(1000) {
-			oval {
-				x = elapsed / 10.0
-				y = elapsed / 10.0
-				color = ORANGE
+		每隔(1000) {
+			椭圆 {
+				左上角x = 经过时间 / 10.0
+				左上角y = 经过时间 / 10.0
+				颜色 = 橙
 			}
-			log("1 second has past.")
+			日志("1 second has past.")
 		}
 
 		长方形 {
-			name("rectangle")
-			x = 100.0
-			y = 100.0
-			width = 100.0
+			取名(障碍物名)
+			左上角x = 100.0
+			左上角y = 100.0
+			宽 = 100.0
 		}
-		oval {
-			x = 0.0
-			y = 85.0
-			accelerate {
-				x = 10.0
-//				y = 10.0
+		椭圆 {
+			左上角x = 0.0
+			左上角y = 85.0
+			加速 {
+				横向加速度_左负右正 = 10.0
 			}
-			whenColliding("rectangle") {
-				stop()
-				x -= 5
-				accelerate(-2, 10)
+			当碰撞(障碍物名) {
+				停止()
+				左上角x -= 5
+				加速(-2, 10)
 			}
 		}
-		image {
-			file("C:/frice.png")
-			x = 200.0
-			y = 300.0
-			velocity {
-				x = -5.5
-//				y = -5.5
+		图片 {
+			远程文件("https://avatars3.githubusercontent.com/u/16398479")
+			左上角x = 200.0
+			左上角y = 300.0
+			速度 {
+				左上角x = -5.5
 			}
 		}
 	}
