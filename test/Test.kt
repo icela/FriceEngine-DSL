@@ -5,7 +5,7 @@ import org.frice.dsl.game
  *
  * @author ice1000
  */
-fun main(args: Array<String>) {
+fun Array<String>.main() {
 	game {
 		bounds(500, 500, 800, 750)
 		showFPS = false

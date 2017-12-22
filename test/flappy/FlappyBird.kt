@@ -1,8 +1,8 @@
 package flappy
 
-import frice.game
+import org.frice.dsl.game
 
-fun main(args: Array<String>) = game {
+fun Array<String>.main() = game {
 	title = "flappy bird demo by ice1000"
 	bounds {
 		x = 100
@@ -14,8 +14,8 @@ fun main(args: Array<String>) = game {
 	whenClicked {
 		tell("2333") {
 			stop()
-			velocity { y = -300.0 }
-			accelerate { y = 10.0 }
+			velocity { y = -200.0 }
+			accelerate { y = 600.0 }
 		}
 	}
 	oval {
