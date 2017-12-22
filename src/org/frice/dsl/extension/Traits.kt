@@ -32,9 +32,9 @@ interface FAnimForTraits {
 
 class DoublePair(var x: Double, var y: Double)
 
-class 加速度对(var 横向加速度_左负右正: Double, var 纵向加速度_上负下正: Double)
+class 加速度对(var 右行加速度: Double, var 下落加速度: Double)
 
-class 左上角坐标(var 左上角x: Double, var 左上角y: Double)
+class 速度对(var 右行速度: Double, var 下落速度: Double)
 
 class AccurateMoveForTraits(var x: Double, var y: Double) : FAnimForTraits {
 	override fun new() = AccurateMove(x, y)

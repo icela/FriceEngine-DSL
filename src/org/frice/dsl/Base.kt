@@ -238,10 +238,10 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		anims += AccurateMove(a.x, a.y)
 	}
 
-	fun FObject.匀速直线运动(块: 左上角坐标.() -> Unit) {
-		val a = 左上角坐标(0.0, 0.0)
+	fun FObject.匀速直线运动(块: 速度对.() -> Unit) {
+		val a = 速度对(0.0, 0.0)
 		块(a)
-		anims += AccurateMove(a.左上角x, a.左上角y)
+		anims += AccurateMove(a.右行速度, a.下落速度)
 	}
 
 	fun FObject.velocity(x: Int, y: Int) = velocity(x.toDouble(), y.toDouble())
@@ -293,18 +293,18 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun FObject.匀加速直线运动(块: 加速度对.() -> Unit) {
 		val a = 加速度对(0.0, 0.0)
 		块(a)
-		anims += AccelerateMove(a.横向加速度_左负右正, a.纵向加速度_上负下正)
+		anims += AccelerateMove(a.右行加速度, a.下落加速度)
 	}
 
 	fun FObject.accelerate(x: Double, y: Double) {
 		anims += AccelerateMove(x, y)
 	}
 
-	fun FObject.匀加速直线运动(横向加速度_左负右正: Double, 纵向加速度_上负下正: Double) = accelerate(横向加速度_左负右正, 纵向加速度_上负下正)
+	fun FObject.匀加速直线运动(右行加速度: Double, 下落加速度: Double) = accelerate(右行加速度, 下落加速度)
 
 	fun FObject.accelerate(x: Int, y: Int) = accelerate(x.toDouble(), y.toDouble())
 
-	fun FObject.匀加速直线运动(横向加速度_左负右正: Int, 纵向加速度_上负下正: Int) = accelerate(横向加速度_左负右正, 纵向加速度_上负下正)
+	fun FObject.匀加速直线运动(右行加速度: Int, 下落加速度: Int) = accelerate(右行加速度, 下落加速度)
 
 	fun Traits.accelerate(block: AccelerateMoveForTraits.() -> Unit) {
 		val a = AccelerateMoveForTraits(0.0, 0.0)
