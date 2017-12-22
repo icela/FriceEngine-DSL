@@ -334,6 +334,10 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		targets += FTargetForTraits(otherName, block)
 	}
 
+	fun Traits.whenColliding(
+		otherName: String,
+		block: () -> Unit) = whenColliding(otherName, SideEffect(block))
+
 	fun AbstractObject.include(name: String) {
 		namedTraits[name]?.let {
 			x = it.x ?: x
