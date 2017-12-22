@@ -14,10 +14,10 @@ import org.frice.obj.sub.ImageObject
 import org.frice.obj.sub.ShapeObject
 import org.frice.resource.graphics.ColorResource
 import org.frice.resource.image.ImageResource
-import org.frice.utils.forceRun
-import org.frice.utils.image2File
-import org.frice.utils.shape.FOval
-import org.frice.utils.shape.FRectangle
+import org.frice.util.forceRun
+import org.frice.util.image2File
+import org.frice.util.shape.FOval
+import org.frice.util.shape.FRectangle
 import java.awt.Dimension
 import java.awt.Rectangle
 import java.io.File
@@ -74,15 +74,22 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val namedTraits = LinkedHashMap<String, Traits>(20)
 	val clickListeningObjects = LinkedHashMap<String, FObject>(20)
 	val timers = ArrayList<Pair<Int, SideEffect>>(5)
+	val alwaysOnTop: Unit
+		get() {
+			isAlwaysOnTop = true
+		}
+
+	val fullScreen: Unit
+		get() {
+			isFullScreen = true
+		}
 
 	private val timer = FriceGameTimer()
 
 	var logFile = "frice.log"
 
-	val elapsed: Double
-		get() = timer.elapsed
-	val 经过时间: Double
-		get() = elapsed
+	val elapsed: Double get() = timer.elapsed
+	val 经过时间: Double get() = elapsed
 
 	/**
 	 * cannot be in 'onInit'
@@ -231,7 +238,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		anims += AccurateMove(a.x, a.y)
 	}
 
-	fun FObject.速度(块: 左上角坐标.() -> Unit) {
+	fun FObject.匀速直线运动(块: 左上角坐标.() -> Unit) {
 		val a = 左上角坐标(0.0, 0.0)
 		块(a)
 		anims += AccurateMove(a.左上角x, a.左上角y)
@@ -273,10 +280,9 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun FObject.stop() = anims.clear()
-	fun FObject.停止() = this.stop()
+	fun FObject.停止() = stop()
 
-	val FObject.stop: Unit
-		get() = stop()
+	val FObject.stop: Unit get() = stop()
 
 	fun FObject.accelerate(block: DoublePair.() -> Unit) {
 		val a = DoublePair(0.0, 0.0)
@@ -284,7 +290,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		anims += AccelerateMove(a.x, a.y)
 	}
 
-	fun FObject.加速(块: 加速度对.() -> Unit) {
+	fun FObject.匀加速直线运动(块: 加速度对.() -> Unit) {
 		val a = 加速度对(0.0, 0.0)
 		块(a)
 		anims += AccelerateMove(a.横向加速度_左负右正, a.纵向加速度_上负下正)
@@ -294,11 +300,11 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		anims += AccelerateMove(x, y)
 	}
 
-	fun FObject.加速(横向加速度_左负右正: Double, 纵向加速度_上负下正: Double) = accelerate(横向加速度_左负右正, 纵向加速度_上负下正)
+	fun FObject.匀加速直线运动(横向加速度_左负右正: Double, 纵向加速度_上负下正: Double) = accelerate(横向加速度_左负右正, 纵向加速度_上负下正)
 
 	fun FObject.accelerate(x: Int, y: Int) = accelerate(x.toDouble(), y.toDouble())
 
-	fun FObject.加速(横向加速度_左负右正: Int, 纵向加速度_上负下正: Int) = accelerate(横向加速度_左负右正, 纵向加速度_上负下正)
+	fun FObject.匀加速直线运动(横向加速度_左负右正: Int, 纵向加速度_上负下正: Int) = accelerate(横向加速度_左负右正, 纵向加速度_上负下正)
 
 	fun Traits.accelerate(block: AccelerateMoveForTraits.() -> Unit) {
 		val a = AccelerateMoveForTraits(0.0, 0.0)
@@ -412,8 +418,9 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val closeWindow get () = closeWindow()
 
 	fun cutScreen() = screenCut.image.image2File("screenshot.png")
-
 	val cutScreen get() = cutScreen()
+
+	fun 截屏() = cutScreen()
 
 	override fun onExit() {
 		onExits?.invoke()

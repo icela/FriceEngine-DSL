@@ -9,9 +9,10 @@ fun Array<String>.main() {
 	game {
 		bounds(500, 500, 800, 750)
 		showFPS = false
+		alwaysOnTop
 
 		whenExit {
-			closeWindow()
+			closeWindow
 		}
 
 		whenUpdate {
@@ -22,6 +23,10 @@ fun Array<String>.main() {
 					color = PINK
 				}
 			}
+		}
+
+		whenClicked {
+			dialogShow("Mouse location: (${mouse.x}, ${mouse.y})")
 		}
 
 		every(1000) {

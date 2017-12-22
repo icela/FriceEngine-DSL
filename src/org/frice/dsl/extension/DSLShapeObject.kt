@@ -2,7 +2,7 @@ package org.frice.dsl.extension
 
 import org.frice.obj.sub.ShapeObject
 import org.frice.resource.graphics.ColorResource
-import org.frice.utils.shape.FShapeInt
+import org.frice.util.shape.FShapeInt
 
 /**
  * Provide sth that is needed by DSL
