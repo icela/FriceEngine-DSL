@@ -65,10 +65,10 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val MAGENTA = ColorResource.MAGENTA
 	val 洋红 = MAGENTA
 
-	var onExits = { }
+	var onExits: (() -> Unit)? = null
 	var onClick = ArrayList<Consumer<AbstractObject>>(20)
 	var onPress = ArrayList<Consumer<AbstractObject>>(5)
-	var onUpdates = { }
+	var onUpdates: (() -> Unit)? = null
 	val collisions = ArrayList<Triple<Collidable, Collidable, SideEffect>>()
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
 	val namedTraits = LinkedHashMap<String, Traits>(20)
@@ -124,7 +124,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		addObject(so)
 	}
 
-	fun 长方形(块: DSLShapeObject.() -> Unit) = rectangle(块)
+	fun 长方形(任务: DSLShapeObject.() -> Unit) = rectangle(任务)
 
 	fun oval(block: DSLShapeObject.() -> Unit) {
 		val so = DSLShapeObject(ColorResource.西木野真姬, FOval(25.0, 25.0))
@@ -132,7 +132,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		addObject(so)
 	}
 
-	fun 椭圆(块: DSLShapeObject.() -> Unit) = oval(块)
+	fun 椭圆(任务: DSLShapeObject.() -> Unit) = oval(任务)
 
 	fun image(block: ImageObject.() -> Unit) {
 		val io = ImageObject(ImageResource.empty())
@@ -168,7 +168,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		onExits = block
 	}
 
-	fun 当退出时(块: () -> Unit) = whenExit(块)
+	fun 当退出时(任务: () -> Unit) = whenExit(任务)
 
 	fun whenUpdate(block: () -> Unit) {
 		onUpdates = block
@@ -177,7 +177,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	fun runLater(millisFromNow: Long, block: () -> Unit) = runLater(millisFromNow, SideEffect(block))
 	fun runFromStart(millisFromNow: Long, block: () -> Unit) = runFromStart(millisFromNow, SideEffect(block))
 
-	fun 当更新时(块: () -> Unit) = whenUpdate(块)
+	fun 当更新时(任务: () -> Unit) = whenUpdate(任务)
 
 	fun whenClicked(block: AbstractObject.() -> Unit) {
 		onClick.add(Consumer(block))
@@ -187,7 +187,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 		timers.add(millisSeconds to SideEffect { block(timer) })
 	}
 
-	fun 每隔(毫秒: Int, 块: FriceGameTimer.() -> Unit) = every(毫秒, 块)
+	fun 每隔(毫秒: Int, 任务: FriceGameTimer.() -> Unit) = every(毫秒, 任务)
 
 	fun tell(name: String, block: FObject.() -> Unit) =
 		if (name in namedObjects) block(namedObjects[name] as FObject)
@@ -412,12 +412,12 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val cutScreen get() = cutScreen()
 
 	override fun onExit() {
-		onExits()
+		onExits?.invoke()
 		super.onExit()
 	}
 
 	override fun onRefresh() {
-		onUpdates()
+		onUpdates?.invoke()
 		collisions.forEach { (a, b, event) ->
 			if (a.collides(b)) event()
 		}
@@ -444,5 +444,5 @@ class DSLErrorException : Exception("Error DSL!")
 @JvmName("gameInPackage")
 fun game(block: FriceBase.() -> Unit) = launch(FriceBase(block))
 
-fun 游戏(块: FriceBase.() -> Unit) = game(块)
+fun 开始游戏(任务: FriceBase.() -> Unit) = game(任务)
 

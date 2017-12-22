@@ -1,8 +1,8 @@
-import org.frice.dsl.游戏
+import org.frice.dsl.开始游戏
 
 fun main(args: Array<String>) {
 	val 障碍物名 = "南墙"
-	游戏 {
+	开始游戏 {
 		边界(500, 500, 800, 750)
 		显示帧率 = false
 
