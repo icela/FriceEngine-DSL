@@ -1,6 +1,6 @@
-package flappy
+package issues
 
-import org.frice.dsl.game
+import frice.game
 
 fun Array<String>.main() = game {
 	bounds {

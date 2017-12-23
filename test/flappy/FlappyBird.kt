@@ -1,6 +1,6 @@
 package flappy
 
-import org.frice.dsl.game
+import frice.game
 
 fun Array<String>.main() = game {
 	title = "flappy bird demo by ice1000"
