@@ -18,6 +18,7 @@ import org.frice.util.forceRun
 import org.frice.util.image2File
 import org.frice.util.shape.FOval
 import org.frice.util.shape.FRectangle
+import org.frice.util.time.FTimer
 import java.awt.Dimension
 import java.awt.Rectangle
 import java.io.File
@@ -73,7 +74,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	val namedObjects = LinkedHashMap<String, AbstractObject>(20)
 	val namedTraits = LinkedHashMap<String, Traits>(20)
 	val clickListeningObjects = LinkedHashMap<String, FObject>(20)
-	val timers = ArrayList<Pair<Int, SideEffect>>(5)
+	val timers = ArrayList<Pair<FTimer, SideEffect>>(10)
 	val alwaysOnTop: Unit
 		get() {
 			isAlwaysOnTop = true
@@ -191,7 +192,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 	}
 
 	fun every(millisSeconds: Int, block: FriceGameTimer.() -> Unit) {
-		timers.add(millisSeconds to SideEffect { block(timer) })
+		timers.add(FTimer(millisSeconds) to SideEffect { block(timer) })
 	}
 
 	fun 每隔(毫秒: Int, 任务: FriceGameTimer.() -> Unit) = every(毫秒, 任务)
@@ -429,6 +430,7 @@ open class FriceBase(val block: FriceBase.() -> Unit) : Game() {
 
 	override fun onRefresh() {
 		onUpdates?.invoke()
+		timers.forEach { (timer, event) -> if (timer.ended()) event() }
 		collisions.forEach { (a, b, event) ->
 			if (a.collides(b)) event()
 		}
