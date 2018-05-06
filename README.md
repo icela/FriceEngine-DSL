@@ -93,7 +93,7 @@ You can use Gradle.
 ```groovy
 repositories { jcenter() }
 
-dependencies { compile org.frice:dsl:1.2.1' }
+dependencies { compile `org.frice:dsl:1.2.1' }
 ```
 
 Or maven.
