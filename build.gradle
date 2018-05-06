@@ -3,6 +3,9 @@ version '1.2.1'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -10,9 +13,10 @@ targetCompatibility = 1.8
 buildscript {
 	ext.kotlin_version = '1.2.41'
 	ext.frice_version = '1.8.3'
-	repositories { mavenCentral() }
+	repositories { jcenter() }
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
 	}
 }
 
@@ -25,6 +29,43 @@ repositories {
 	jcenter()
 }
 
+bintray {
+	user = "ice1000"
+	key = findProperty("key").toString()
+	configurations = ["archives"]
+	pkg {
+		name = project.name
+		repo = "FriceEngine"
+		githubRepo = "icela/FriceEngine-DSL"
+		publicDownloadNumbers = true
+		vcsUrl = "https://github.com/icela/FriceEngine-DSL.git"
+		version {
+			name = project.version
+			vcsTag = "v$project.version"
+			websiteUrl = "https://github.com/icela/FriceEngine-DSL/releases/tag/$vcsTag"
+		}
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication.class) {
+			from components.java
+			groupId = group
+			artifactId = project.name
+			version = project.version
+			artifact sourcesJar
+			artifact fatJar
+			pom.withXml {
+				val root = asNode()
+				root.appendNode("description", "Kotlin DSL for FriceEngine")
+				root.appendNode("name", project.name)
+				root.children().last()
+			}
+		}
+	}
+}
+
 sourceSets {
 	main.kotlin.srcDirs += 'src'
 	main.java.srcDirs += 'src'
@@ -34,21 +75,30 @@ sourceSets {
 //	test.java.srcDirs += 'demo'
 }
 
-configurations {
-	artifact
-}
-
 dependencies {
-	artifact "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-	artifact group: 'org.jetbrains', name: 'annotations', version: '15.0'
-	artifact "org.frice:engine:$frice_version"
-
-	configurations.compile.extendsFrom(configurations.artifact)
+	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+	compile group: 'org.jetbrains', name: 'annotations', version: '16.0.1'
+	compile "org.frice:engine:$frice_version"
 
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 	testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
 
-jar {
-	from { configurations.artifact.collect { it.isDirectory() ? it : zipTree(it) } }
+task fatJar(type: Jar) {
+	classifier = 'all'
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	with jar
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	description 'Assembles a jar archive containing the source code of this project.'
+	group 'build'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives jar
+	archives fatJar
+	archives sourcesJar
 }

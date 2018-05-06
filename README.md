@@ -9,7 +9,8 @@ AppVeyor|[![Build status](https://ci.appveyor.com/api/projects/status/tne8wv0mof
 CircleCI|[![CircleCI](https://circleci.com/gh/icela/FriceEngine-DSL.svg?style=svg)](https://circleci.com/gh/icela/FriceEngine-DSL)
 CodeShip|[![Codeship Status for icela/FriceEngine-DSL](https://app.codeship.com/projects/02ce9100-61f9-0135-bc9e-7aecbc4a3d79/status?branch=master)](https://app.codeship.com/projects/239720)
 
-[![](https://jitpack.io/v/icela/FriceEngine-DSL.svg)](https://jitpack.io/#icela/FriceEngine-DSL)
+[![](https://jitpack.io/v/icela/FriceEngine-DSL.svg)](https://jitpack.io/#icela/FriceEngine-DSL)<br/>
+[ ![Download](https://api.bintray.com/packages/ice1000/FriceEngine/dsl/images/download.svg) ](https://bintray.com/ice1000/FriceEngine/dsl/_latestVersion)
 
 This is a DSL system for FriceEngine.<br/>
 And it's written in **Kotlin**.
@@ -90,15 +91,28 @@ And they are all **VALID Kotlin codes**. U can even compile them directly with *
 You can use Gradle.
 
 ```groovy
-allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
-}
-dependencies {
-	compile 'com.github.icela:FriceEngine-DSL:v1.2.1'
-}
+repositories { jcenter() }
+
+dependencies { compile org.frice:dsl:1.2.1' }
+```
+
+Or maven.
+
+```xml
+<dependency>
+  <groupId>org.frice</groupId>
+  <artifactId>dsl</artifactId>
+  <version>1.2.1</version>
+  <type>pom</type>
+</dependency>
+```
+
+Or Ivy.
+
+```xml
+<dependency org='org.frice' name='dsl' rev='1.2.1'>
+  <artifact name='dsl' ext='pom'/>
+</dependency>
 ```
 
 # The Chinese version
