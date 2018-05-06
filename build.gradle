@@ -4,28 +4,25 @@ version '1.2.1'
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-
-allprojects {
-	repositories {
-		maven { url 'https://jitpack.io' }
-	}
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 buildscript {
-	ext.kotlin_version = '1.2.10'
-	ext.frice_version = 'v1.8.0'
-	repositories {
-		mavenCentral()
-	}
+	ext.kotlin_version = '1.2.41'
+	ext.frice_version = '1.8.3'
+	repositories { mavenCentral() }
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 	}
 }
 
+compileKotlin {
+	kotlinOptions.jvmTarget = "1.8"
+}
+
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 sourceSets {
@@ -42,9 +39,9 @@ configurations {
 }
 
 dependencies {
-	artifact "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+	artifact "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 	artifact group: 'org.jetbrains', name: 'annotations', version: '15.0'
-	artifact "com.github.icela:FriceEngine:$frice_version"
+	artifact "org.frice:engine:$frice_version"
 
 	configurations.compile.extendsFrom(configurations.artifact)
 
@@ -55,4 +52,3 @@ dependencies {
 jar {
 	from { configurations.artifact.collect { it.isDirectory() ? it : zipTree(it) } }
 }
-
